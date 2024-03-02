@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy Birthday LEO</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 0 30%;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
+        
+        .game-container {
+            display: none;
+        }
+        
+        .password-input {
+            margin-top: 20px;
+        }
+        
+        .p1 {
+            opacity: 0;
+            animation: fade-in 2s;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .png {
+            display: none;
+            animation: fade-in-png 2s;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fade-in-png {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%);
+            }
+            33% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="password-input">
+        <label for="password">Enter the password:</label>
+        <input type="password" id="password" />
+        <button onclick="startGame()">Start Game</button>
+    </div>
+    <div class="game-container">
+        <h1>终于来了吗？</h1>
+        <p class="p1">This is a placeholder text that will slowly fade in.</p>
+        <img class="png" src="1.png" alt="Placeholder 1">
+        <img class="png" src="2.png" alt="Placeholder 2">
+        <img class="png" src="3.png" alt="Placeholder 3">
+        
+        
+    </div>
+    
+        <script>
+            function startGame() {
+                var passwordInput = document.getElementById("password");
+                var password = passwordInput.value;
+                
+                if (password === "elysium") {
+                    document.querySelector(".password-input").style.display = "none";
+                    document.querySelector(".game-container").style.display = "block";
+                    
+                    
+                } else {
+                    var messages = [
+                        "Try again",
+                        "Try again stupid",
+                        "Come on LEOO",
+                        "This is a disaster",
+                        'I am sorry, but the password is incorrect. Please try again.',
+                        "密码错误，请再试一次",
+                        "你是个天才，但密码错了",
+                        "密码不对，再试一次吧",
+                        "密码错了，你需要更聪明的密码",
+                        "密码错误，再试试其他的吧",
+                        "the clue is in the name",
+                    ];
+                    var randomIndex = Math.floor(Math.random() * messages.length);
+                    alert(messages[randomIndex]);
+                }
+            }
+        </script>
+    </body>
+    </html>
+       
+        
+
+</body>
+</html>
