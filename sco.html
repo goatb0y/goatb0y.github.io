@@ -18,12 +18,18 @@
         }
         
         .password-input {
-            margin-top: 20px;
+            margin-top: 40px;
         }
         
         .p1 {
             opacity: 0;
-            animation: fade-in 2s;
+            animation: fade-in 4s;
+            animation-fill-mode: forwards;
+        }
+
+        .png {
+            opacity: 0;
+            animation: fade-in 6s;
             animation-fill-mode: forwards;
         }
 
@@ -36,26 +42,15 @@
             }
         }
 
-        .png {
-            display: none;
-            animation: fade-in-png 2s;
-            animation-fill-mode: forwards;
+        .image-container {
+             display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 12px;
         }
+        
 
-        @keyframes fade-in-png {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%);
-            }
-            33% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+      
     </style>
 </head>
 <body>
@@ -67,11 +62,12 @@
     </div>
     <div class="game-container">
         <h1>终于来了吗？</h1>
-        <p class="p1">This is a placeholder text that will slowly fade in.</p>
-        <img class="png" src="1.png" alt="Placeholder 1">
-        <img class="png" src="2.png" alt="Placeholder 2">
-        <img class="png" src="3.png" alt="Placeholder 3">
-        
+        <p class="p1"><b>DRAMA</b>: Helloj there, it's your special day, is it? Lets have some entertainment.. shall we.. </p>
+        <div class="image-container">
+            <a href="1.html"><img class="png" src="1.png" alt="Placeholder 1"></a>
+            <a href="2.html"><img class="png" src="2.png" alt="Placeholder 2"></a>
+            <a href="3.html"><img class="png" src="3.png" alt="Placeholder 3"></a>
+        </div>
         
     </div>
     
