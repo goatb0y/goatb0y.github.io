@@ -204,7 +204,6 @@ body.lcars-theme {
 .lcars-text-block {
     font-size: 1.2rem;
     text-transform: none;
-    /* Keep text mixed case for readability */
     line-height: 1.6;
     color: #ccc;
     max-width: 800px;
@@ -286,9 +285,42 @@ body.lcars-theme {
 /* Additional layout fixes */
 .lcars-section {
     scroll-margin-top: 100px;
-    /* For smooth scrolling to anchors */
 }
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lcars-main-wrapper {
+        flex-direction: column;
+    }
+
+    .lcars-sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .lcars-nav-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .lcars-btn {
+        border-radius: 10px;
+        text-align: center;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+    }
+
+    .lcars-h1 {
+        font-size: 2.5rem;
+    }
+
+    .lcars-subtitle {
+        font-size: 1.1rem;
+    }
 }
