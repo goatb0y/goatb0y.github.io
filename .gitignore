@@ -16,4 +16,5 @@ node_modules/
 
 # Local data (if any)
 tmp/
+raw/
 .temp/
