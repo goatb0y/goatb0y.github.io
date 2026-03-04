@@ -1,0 +1,321 @@
+/* =========================================================================
+   _sidebar.css
+   Left sidebar: search box, folder tree, about expander, profile pic
+   ========================================================================= */
+
+/* ---- Sidebar shell ---- */
+.sys-sidebar {
+    width: var(--sidebar-w);
+    background-color: var(--sys-panel);
+    border-right: 1px solid var(--sys-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    transition: transform 0.3s ease;
+}
+
+/* ---- Scrollable top area ---- */
+.sidebar-top {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sys-border) transparent;
+}
+
+.sidebar-top::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-top::-webkit-scrollbar-thumb {
+    background-color: var(--sys-border);
+    border-radius: 4px;
+}
+
+/* ---- Search bar ---- */
+.search-container {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.search-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sys-action-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--sys-bg);
+    border: 1px solid var(--sys-border);
+    color: var(--sys-text-muted);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sys-action-btn:hover {
+    color: var(--sys-accent);
+    border-color: var(--sys-accent);
+    background: var(--sys-accent-dim);
+}
+
+.sys-input {
+    flex-grow: 1;
+    width: 100%;
+    background-color: var(--sys-bg);
+    border: 1px solid var(--sys-border);
+    color: var(--sys-text-bright);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.sys-input:focus {
+    border-color: var(--sys-accent);
+    box-shadow: 0 0 0 1px var(--sys-accent-dim);
+}
+
+.sys-input::placeholder {
+    color: var(--sys-text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    font-size: var(--text-xs);
+}
+
+/* =========================================================================
+   Folder tree
+   ========================================================================= */
+.sys-tech-tree {
+    list-style: none;
+    user-select: none;
+    margin-right: 15px;
+}
+
+.tree-group {
+    margin-bottom: 2px;
+}
+
+.folder-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    color: var(--sys-text-main);
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+}
+
+.folder-item:hover {
+    background: rgba(148, 163, 184, 0.05);
+    color: var(--sys-text-bright);
+}
+
+.folder-item.active {
+    background: var(--sys-accent-dim);
+    color: var(--sys-text-bright);
+    border-left: 2px solid var(--sys-accent);
+}
+
+/* Icon wrapper */
+.folder-icon-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    color: var(--sys-text-muted);
+}
+
+.folder-item:hover .folder-icon-wrapper,
+.folder-item.active .folder-icon-wrapper {
+    color: var(--sys-accent);
+}
+
+/* Folder name + hover-scroll animation */
+.folder-name {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1px;
+    position: relative;
+}
+
+.folder-name-inner {
+    display: inline-block;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.folder-item:hover .folder-name {
+    text-overflow: clip;
+}
+
+.folder-item:hover .folder-name-inner {
+    animation: side-scroll 8s linear infinite alternate;
+}
+
+@keyframes side-scroll {
+
+    0%,
+    15% {
+        transform: translateX(0);
+    }
+
+    85%,
+    100% {
+        transform: translateX(min(0px, calc(-100% + 220px)));
+    }
+}
+
+/* Children list */
+.tree-children {
+    display: none;
+    list-style: none;
+    padding-left: 10px;
+    margin-left: 6px;
+    border-left: 1px solid var(--sys-border);
+}
+
+.tree-children.expanded {
+    display: block;
+}
+
+.file-item {
+    font-size: var(--text-xs);
+    margin: 2px 0;
+    margin-left: 8px;
+    padding-left: 4px;
+}
+
+/* Chevron */
+[id^="chevron-"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chevron-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+    margin-right: 4px;
+    color: var(--sys-text-muted);
+}
+
+.folder-item:hover .chevron-icon {
+    color: var(--sys-text-bright);
+}
+
+.chevron-icon.expanded {
+    transform: rotate(90deg);
+}
+
+/* =========================================================================
+   Sidebar bottom — About expander
+   ========================================================================= */
+.sidebar-bottom {
+    border-top: 1px solid var(--sys-border);
+    background-color: var(--sys-panel);
+    flex-shrink: 0;
+}
+
+.about-expander {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--sys-text-muted);
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.about-expander:hover {
+    color: var(--sys-text-bright);
+}
+
+.about-expander .indicator {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.3s;
+}
+
+.about-content {
+    padding: 0 20px 20px 20px;
+    display: none;
+    /* Toggled by JS */
+    border-bottom: 1px solid transparent;
+}
+
+/* Profile picture */
+.profile-pic-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    border: 1px solid var(--sys-border);
+    position: relative;
+    padding: 1px;
+    display: inline-block;
+    overflow: hidden;
+    background-color: var(--sys-bg);
+}
+
+.profile-pic-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.about-profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0.2) contrast(1.1);
+    transition: filter 0.3s ease;
+}
+
+.profile-pic-container:hover .about-profile-pic {
+    filter: grayscale(0) contrast(1.15);
+}
+
+/* About text */
+.about-content h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--sys-text-bright);
+    margin-bottom: 2px;
+}
+
+.about-content .role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--sys-accent-alt);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+}
+
+.about-content .bio {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}

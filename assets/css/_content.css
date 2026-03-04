@@ -1,0 +1,342 @@
+/* =========================================================================
+   _content.css
+   Right main pane: header (sticky + compact), content scroller,
+   article typography, placeholder, shared button styles
+   ========================================================================= */
+
+/* ---- Main pane shell ---- */
+.sys-main-pane {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--sys-bg);
+}
+
+/* =========================================================================
+   Content header (sticky, collapses on scroll)
+   ========================================================================= */
+.content-header {
+    flex-shrink: 0;
+    padding: 25px 40px 15px 40px;
+    border-bottom: 1px solid var(--sys-border);
+    background-color: rgba(3, 4, 7, 0.90);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.content-header-inner {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 1040px;
+    margin: 0 auto;
+    align-items: flex-end;
+    transition: all 0.3s ease;
+}
+
+.header-spacer {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.header-content-wrapper {
+    flex-grow: 1;
+    max-width: 750px;
+    width: 100%;
+}
+
+.breadcrumb {
+    font-family: var(--font-mono);
+    color: var(--sys-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.post-title {
+    font-family: var(--font-display);
+    color: var(--sys-text-bright);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.post-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--sys-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.post-meta .separator {
+    color: var(--sys-text-muted);
+    margin: 0 8px;
+}
+
+/* Compact header (desktop — triggered by .scrolled-down on body) */
+body.scrolled-down .content-header {
+    padding: 12px 40px;
+}
+
+body.scrolled-down .content-header .breadcrumb {
+    display: none;
+}
+
+body.scrolled-down .header-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body.scrolled-down .content-header .post-title {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+body.scrolled-down .content-header .post-meta {
+    font-size: 0.75rem;
+}
+
+/* =========================================================================
+   Shared button
+   ========================================================================= */
+.sys-btn-link {
+    background: none;
+    border: none;
+    color: var(--sys-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.sys-btn-link:hover {
+    color: var(--sys-text-bright);
+}
+
+/* =========================================================================
+   Scrollable content window
+   ========================================================================= */
+.content-scroller {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 30px 40px 60px 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sys-border) transparent;
+}
+
+/* No padding when home view is active */
+.content-scroller.is-home {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-scroller::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content-scroller::-webkit-scrollbar-thumb {
+    background-color: var(--sys-border);
+    border-radius: 6px;
+}
+
+.content-scroller::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sys-text-muted);
+}
+
+/* =========================================================================
+   Empty-state placeholder
+   ========================================================================= */
+.sys-placeholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--sys-text-muted);
+    text-align: center;
+}
+
+.sys-placeholder h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    color: var(--sys-text-muted);
+}
+
+.sys-placeholder p {
+    font-size: 0.9rem;
+}
+
+/* =========================================================================
+   Article typography
+   ========================================================================= */
+.content-body-layout {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 1040px;
+    margin: 0 auto;
+    position: relative;
+    align-items: flex-start;
+}
+
+.article-content {
+    flex-grow: 1;
+    max-width: 750px;
+    width: 100%;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+.article-content.fade-out {
+    opacity: 0;
+}
+
+.article-content h2,
+.article-content h3 {
+    font-family: var(--font-display);
+    color: var(--sys-text-bright);
+    margin-top: 48px;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+}
+
+.article-content h2 {
+    font-size: var(--text-lg);
+}
+
+.article-content h3 {
+    font-size: var(--text-md);
+}
+
+.article-content p {
+    margin-bottom: 28px;
+    color: var(--sys-text-main);
+    font-size: var(--text-base);
+    line-height: var(--lh-article);
+}
+
+.article-content ul,
+.article-content ol {
+    margin-bottom: 24px;
+    padding-left: 20px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content li strong,
+.article-content p b,
+.article-content p strong {
+    color: var(--sys-text-bright);
+}
+
+/* --- Uniform Image Styling --- */
+.article-content img {
+    width: 100%;
+    max-width: 100%;
+    height: 450px;
+    object-fit: contain;
+    margin: 40px 0;
+    display: block;
+    border: 1px solid var(--sys-border);
+    border-radius: 4px;
+    background-color: var(--sys-panel);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.article-content img:hover {
+    border-color: var(--sys-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+
+
+/* =========================================================================
+   Mobile top bar & marquee
+   ========================================================================= */
+.mobile-top-bar {
+    display: none;
+    width: 100%;
+    background-color: var(--sys-panel);
+    border-bottom: 1px solid var(--sys-border);
+    align-items: center;
+    overflow: hidden;
+}
+
+.mobile-nav-toggle {
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid transparent;
+    color: var(--sys-text-bright);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.marquee-container {
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    padding: 0 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-text {
+    display: inline-block;
+    padding-left: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--sys-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+@keyframes scroll-marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.marquee-active .marquee-text {
+    animation: scroll-marquee 15s linear infinite;
+}

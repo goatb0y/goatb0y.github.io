@@ -1,0 +1,39 @@
+name: Generate and Publish Data
+
+# This workflow runs whenever you push changes to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to commit changes back
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Build Script
+        run: python build.py
+
+      - name: Commit Generated data.js
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add assets/js/data.js
+          
+          # Only commit if data.js actually changed
+          if git diff --staged --quiet; then
+            echo "No changes to data.js"
+          else
+            git commit -m "Auto-generate data.js from modified content"
+            git push
+          fi

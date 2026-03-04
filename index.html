@@ -4,104 +4,381 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siddharth Arya | sid.com.de</title>
+    <title>Siddharth Arya | Personal Logs </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Titillium+Web:wght@200;400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Mermaid Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+    <!-- Data source for blog/projects -->
+    <script src="/assets/js/data.js"></script>
+
+    <!-- URL Restoration for Clean URLs (Option B) -->
+    <script type="text/javascript">
+        (function (l) {
+            if (l.search[1] === 'p') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).filter(function (s) {
+                    return s.slice(0, 2) === 'p='
+                })[0];
+                if (decoded) {
+                    window.history.replaceState(null, null,
+                        l.pathname.slice(0, -1) + decoded.slice(2) +
+                        l.hash
+                    );
+                }
+            }
+        }(window.location))
+    </script>
 </head>
 
-<body class="lcars-theme">
-    <div class="lcars-container">
-        <!-- Header Section -->
-        <header class="lcars-header">
-            <div class="lcars-elbow-top-left"></div>
-            <div class="lcars-bar-top">
-                <span class="lcars-title">ACCESSING SECURE DATA CHANNEL... SID.COM.DE</span>
-                <span class="lcars-status">SYSTEM STATUS: OPTIMAL</span>
-            </div>
-            <div class="lcars-elbow-top-right"></div>
-        </header>
+<body class="system-dashboard">
+    <!-- TOP BAR (Static) -->
+    <header class="sys-bar top">
+        <div class="sys-title"> SID.COM.DE/SIGN </div>
+        <div class="sys-status">SYSTEM STATUS: OPTIMAL</div>
+    </header>
 
-        <div class="lcars-main-wrapper">
-            <!-- Sidebar / Terminal -->
-            <nav class="lcars-sidebar">
-                <div class="lcars-sidebar-top-cap"></div>
-                <ul class="lcars-nav-menu">
-                    <li><a href="#bio" class="lcars-btn gold">PERSONNEL</a></li>
-                    <li><a href="#projects" class="lcars-btn cyan">MISSION LOGS</a></li>
-                    <li><a href="#skills" class="lcars-btn magenta">SYSTEMS</a></li>
-                    <li><a href="#contact" class="lcars-btn orange">COMM-LINK</a></li>
-                </ul>
-                <div class="lcars-sidebar-bottom-cap"></div>
-                <div class="lcars-sidebar-footer">
-                    <span class="lcars-serial">704-555-891</span>
+    <div class="dashboard-wrapper">
+        <!-- SIDEBAR (Left Pane) -->
+        <nav class="sys-sidebar" id="mobile-sidebar">
+            <div class="sidebar-top">
+                <div class="search-container">
+                    <div class="search-header">
+                        <input type="text" id="post-search" placeholder="Search database..." class="sys-input"
+                            autocomplete="off" />
+                        <button id="btn-expand-all" class="sys-action-btn" title="Expand All">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </button>
+                        <button id="btn-collapse-all" class="sys-action-btn" title="Collapse All">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 14 10 14 10 20"></polyline>
+                                <polyline points="20 10 14 10 14 4"></polyline>
+                                <line x1="14" y1="10" x2="21" y2="3"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </nav>
-
-            <!-- Main Content Area -->
-            <main class="lcars-content">
-                <section id="hero" class="lcars-section">
-                    <h1 class="lcars-h1">SIDDHARTH ARYA</h1>
-                    <p class="lcars-subtitle">ARCHITECT | DEVELOPER | EXPLORER</p>
-                    <div class="lcars-divider"></div>
-                    <div class="lcars-text-block">
-                        <p>Welcome to the digital bridge. This interface provides a gateway to my professional and
-                            personal endeavors. Explore the sectors using the navigation controls to the left.</p>
+                <div class="tree-container">
+                    <div class="folder-item post-link home-link" data-id="home"
+                        style="margin-bottom: 15px; border-bottom: 1px solid var(--sys-border); padding-bottom: 15px; border-radius: 0;">
+                        <span class="folder-icon-wrapper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sys-icon">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </span>
+                        <span class="folder-name"><span class="folder-name-inner">[ HOME ]</span></span>
                     </div>
-                </section>
-
-                <section id="skills" class="lcars-section">
-                    <h2 class="lcars-h2">SYSTEMS ANALYSIS</h2>
-                    <div class="lcars-grid-container">
-                        <div class="lcars-data-point gold">
-                            <span class="label">COGNITIVE SYSTEMS:</span>
-                            <span class="value">AI AGENTS, LLMS</span>
-                        </div>
-                        <div class="lcars-data-point cyan">
-                            <span class="label">STRUCTURAL DESIGN:</span>
-                            <span class="value">ARCHITECTURE, BIM</span>
-                        </div>
-                        <div class="lcars-data-point magenta">
-                            <span class="label">INTERFACE:</span>
-                            <span class="value">UI/UX, VANILLA WEB</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="projects" class="lcars-section">
-                    <h2 class="lcars-h2">MISSION REGISTRY</h2>
-                    <div class="lcars-text-block">
-                        <ul class="lcars-list">
-                            <li><span class="gold">PROJECT ALPHA:</span> OPENCLAW AGENT INTEGRATION</li>
-                            <li><span class="cyan">PROJECT BETA:</span> EPAPER DISPLAY ECOSYSTEM</li>
-                            <li><span class="magenta">PROJECT GAMMA:</span> AUTONOMOUS ARCHITECTURE SCRIPTS</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section id="contact" class="lcars-section">
-                    <h2 class="lcars-h2">COMMUNICATION UPLINK</h2>
-                    <div class="lcars-text-block">
-                        <p>ESTABLISHING SECURE CONNECTION... SEND TRANSMISSION TO: <a href="mailto:hello@sid.com.de"
-                                class="lcars-link">HELLO@SID.COM.DE</a></p>
-                    </div>
-                </section>
-            </main>
-        </div>
-
-        <!-- Footer Section -->
-        <footer class="lcars-footer">
-            <div class="lcars-elbow-bottom-left"></div>
-            <div class="lcars-bar-bottom">
-                <span class="lcars-copyright">&copy; 2026 LCARS INTERFACE v4.7</span>
+                    <ul id="collection-tree" class="sys-tech-tree">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
             </div>
-            <div class="lcars-elbow-bottom-right"></div>
-        </footer>
+
+            <div class="sidebar-bottom">
+                <div class="about-expander" id="about-toggle">
+                    <span class="about-title">PERSONNEL DOSSIER</span>
+                    <span class="indicator" id="about-indicator">+</span>
+                </div>
+                <div class="about-content" id="about-content">
+                    <div class="profile-pic-container">
+                        <img src="/assets/images/profile.webp" alt="Siddharth Arya" class="about-profile-pic">
+                    </div>
+                    <h1>SIDDHARTH ARYA</h1>
+                    <p class="role">DESIGN RESEARCHER / MAKER</p>
+                    <p class="bio">A techno-optimist design generalist focused on meaningful design, systems thinking,
+                        and elegant integrations. </p>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT (Right Pane) -->
+        <main class="sys-main-pane">
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-top-bar" id="mobile-top-bar">
+                <button class="mobile-nav-toggle" id="mobile-nav-toggle">
+                    [ ACCESS INDEX ]
+                </button>
+                <div class="marquee-container" id="mobile-marquee">
+                    <span class="marquee-text" id="marquee-text"></span>
+                </div>
+            </div>
+
+            <!-- Sticky Header inside right pane -->
+            <header class="content-header" id="content-header" style="visibility: hidden; opacity: 0;">
+                <div class="content-header-inner">
+                    <div class="header-spacer"></div>
+                    <div class="header-content-wrapper">
+                        <div class="breadcrumb" id="content-breadcrumb">COLLECTION / SUB-COLLECTION</div>
+                        <h1 class="post-title" id="content-title">POST TITLE</h1>
+                        <div class="post-meta" id="content-meta">
+                            <span id="content-date">DATE</span>
+                            <span class="separator">//</span>
+                            <span>SIDDHARTH ARYA</span>
+                            <span class="separator">//</span>
+                            <button id="share-btn" class="sys-btn-link">[ SHARE LINK ]</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Window -->
+            <article class="content-scroller" id="content-scroller">
+                <div class="sys-home-view" id="home-view">
+                    <div class="home-grid">
+
+                        <!-- 01 — Dossier: full-width horizontal banner -->
+                        <div class="bento-widget bento-dossier" style="--widget-color: var(--sys-accent)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">01-A</span>
+                                    <span class="bento-title">PERSONNEL DOSSIER</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content dossier-layout">
+                                <div class="home-profile-pic">
+                                    <img src="/assets/images/profile.webp" alt="Siddharth Arya">
+                                </div>
+                                <div class="home-intro-text">
+                                    <h1>SIDDHARTH ARYA</h1>
+                                    <p class="role">DESIGN RESEARCHER / MAKER</p>
+                                    <p class="bio">Techno-optimist design generalist. Focused on meaningful design,
+                                        systems thinking, and elegant integrations between human needs and technical
+                                        possibility. 5+ years of experience in the hardware innovation ecosystem.
+                                        Working on Public Service System problems now.
+                                        Open to new projects </p>
+                                </div>
+                                <div class="dossier-stats">
+                                    <div class="dossier-stat">
+                                        <span class="ds-label">EMAIL</span>
+                                        <a href="mailto:hello@sid.com.de"
+                                            class="ds-value ds-button">HELLO@SID.COM.DE</a>
+                                    </div>
+                                    <div class="dossier-stat">
+                                        <span class="ds-label">LINKEDIN</span>
+                                        <a href="https://linkedin.com/in/seedoh" target="_blank"
+                                            class="ds-value ds-button">LINKEDIN.COM/IN/SEEDOH</a>
+                                    </div>
+                                    <div class="dossier-stat">
+                                        <span class="ds-label">CURRICULUM VITAE</span>
+                                        <a href="#" target="_blank" class="ds-value ds-button">VIEW DOSSIER / CV ↗</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 02 — Logs: left half stack -->
+                        <div class="bento-widget bento-logs" style="--widget-color: var(--sys-accent-alt)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">02-B</span>
+                                    <span class="bento-title">DATABASE // RECENT LOGS</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content">
+                                <div id="recent-posts-list" class="posts-list">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 03 — Audio: right half top -->
+                        <div class="bento-widget bento-audio" style="--widget-color: var(--sys-accent-warn)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">03-C</span>
+                                    <span class="bento-title">SUBSPACE AUDIO // YT MUSIC</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content audio-widget-content">
+                                <div class="audio-main-layout">
+                                    <div class="audio-visualizer-container">
+                                        <div id="yt-player-container">
+                                            <div id="yt-player"></div>
+                                        </div>
+                                    </div>
+                                    <div class="audio-ui-col">
+                                        <div class="audio-info-row">
+                                            <div class="audio-details">
+                                                <div class="audio-status">INITIALIZING...</div>
+                                                <div class="audio-title" id="audio-title">---</div>
+                                                <div class="audio-artist" id="audio-artist">---</div>
+                                            </div>
+                                        </div>
+                                        <div class="audio-bottom-row">
+                                            <div class="audio-progress-section">
+                                                <div id="equalizer" class="equalizer stretched-eq">
+                                                    <!-- Bars generated by JS -->
+                                                </div>
+                                                <div class="progress-bar-bg">
+                                                    <div class="progress-bar-fill" id="audio-progress-fill"
+                                                        style="width: 0%;"></div>
+                                                </div>
+                                                <div class="progress-time">
+                                                    <span id="audio-current-time">00:00</span>
+                                                    <span id="audio-duration">00:00</span>
+                                                </div>
+                                            </div>
+                                            <div class="audio-controls">
+                                                <button class="sys-action-btn" id="audio-prev"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                                                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                                                    </svg></button>
+                                                <button class="sys-action-btn play-btn" id="audio-play-pause"><svg
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                                    </svg></button>
+                                                <button class="sys-action-btn" id="audio-next"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                                                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                                                    </svg></button>
+                                                <button class="sys-action-btn" id="audio-mute"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="volume-up">
+                                                        </path>
+                                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="volume-down">
+                                                        </path>
+                                                        <line x1="23" y1="9" x2="17" y2="15" class="mute-x"></line>
+                                                        <line x1="17" y1="9" x2="23" y2="15" class="mute-x"></line>
+                                                    </svg></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 — Biometrics: right half bottom -->
+                        <div class="bento-widget bento-biometrics" style="--widget-color: var(--sys-accent-crit)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">04-D</span>
+                                    <span class="bento-title">BIOMETRICS // QUANTIFIED SELF</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content biometrics-widget">
+                                <div class="bio-stats-col">
+                                    <div class="bio-stat">
+                                        <span class="bio-label">SLEEP</span>
+                                        <span class="bio-value" id="bio-sleep">-- HRS</span>
+                                    </div>
+                                    <div class="bio-stat">
+                                        <span class="bio-label">HRV</span>
+                                        <span class="bio-value" id="bio-hrv">-- MS</span>
+                                    </div>
+                                    <div class="bio-stat">
+                                        <span class="bio-label">FOCUS</span>
+                                        <span class="bio-value" id="bio-focus">-- %</span>
+                                    </div>
+                                </div>
+                                <div class="bio-chart-col">
+                                    <div class="bio-chart" id="bio-chart">
+                                        <!-- Populated by biometrics.js -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="content-body-layout" id="content-body-layout" style="display: none;">
+                    <aside class="outline-container" id="outline-container" style="display: none;">
+                        <div class="outline-title">POST OUTLINE</div>
+                        <ul id="post-outline" class="sys-tech-tree">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </aside>
+
+                    <div class="article-content fade-out" id="article-content">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </article>
+        </main>
     </div>
-    <script src="assets/js/app.js"></script>
+
+    <!-- MINI PLAYER (Shows on Post Views) -->
+    <div class="mini-player" id="mini-player">
+        <div class="mini-player-inner">
+            <div class="mini-info">
+                <div class="mini-title" id="mini-audio-title">---</div>
+                <div class="mini-artist" id="mini-audio-artist">---</div>
+            </div>
+            <div class="mini-controls">
+                <button class="sys-action-btn" id="mini-audio-prev">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                    </svg>
+                </button>
+                <button class="sys-action-btn play-btn" id="mini-audio-play-pause">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+                <button class="sys-action-btn" id="mini-audio-next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="mini-progress-section">
+                <div class="progress-bar-bg" id="mini-progress-bar">
+                    <div class="progress-bar-fill" id="mini-audio-progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+            <button class="sys-action-btn mini-close" id="mini-player-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR (Static) -->
+    <footer class="sys-bar bottom">
+        <div class="sys-contact">COMM-LINK: <a href="mailto:hello@sid.com.de">HELLO@SID.COM.DE</a></div>
+        <div class="sys-copyright">&copy; 2026 LCARS CORE v6.0</div>
+    </footer>
+
+    <!-- Application Logic -->
+    <script src="/assets/js/audio.js"></script>
+    <script src="/assets/js/biometrics.js"></script>
+    <script src="/assets/js/app.js"></script>
 </body>
 
 </html>

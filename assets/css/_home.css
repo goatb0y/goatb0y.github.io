@@ -1,0 +1,645 @@
+/* =========================================================================
+   _home.css
+   Home view: bento grid layout and all individual widget styles
+   (dossier, logs, audio, biometrics)
+   ========================================================================= */
+
+/* =========================================================================
+   Home view wrapper
+   ========================================================================= */
+.sys-home-view {
+    display: none;
+    /* Toggled by JS */
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+.sys-home-view.fade-out {
+    opacity: 0;
+}
+
+/* =========================================================================
+   Bento grid
+   Layout:
+     col 1 — flexible left panel
+     col 2 — flexible right panel
+     row 1 — dossier banner (spans both cols)
+     rest  — logs (left) | audio + biometrics (right stack)
+   ========================================================================= */
+.home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto minmax(300px, auto);
+    grid-template-areas:
+        "dossier    dossier"
+        "logs       audio"
+        "logs       biometrics";
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--sys-bg);
+    overflow-y: auto;
+    height: 100%;
+}
+
+/* Grid area assignments */
+.bento-dossier {
+    grid-area: dossier;
+}
+
+.bento-logs {
+    grid-area: logs;
+    min-height: 500px;
+}
+
+.bento-audio {
+    grid-area: audio;
+}
+
+.bento-biometrics {
+    grid-area: biometrics;
+}
+
+/* =========================================================================
+   Generic bento widget (Retro Instrument Panel Style)
+   ========================================================================= */
+.bento-widget {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sys-panel);
+    position: relative;
+    padding: 24px;
+    border: 1px solid var(--sys-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Corner Accents */
+.bento-widget::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 15px;
+    height: 15px;
+    border-top: 2px solid var(--widget-color);
+    border-left: 2px solid var(--widget-color);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.bento-widget::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 15px;
+    height: 15px;
+    border-bottom: 2px solid var(--widget-color);
+    border-right: 2px solid var(--widget-color);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Subtle panel texture */
+.bento-widget .bento-texture {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--sys-border) 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bento-widget:hover {
+    border-color: var(--widget-color);
+    background-color: rgba(7, 10, 16, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 15px var(--sys-accent-dim);
+}
+
+/* Widget header row */
+.bento-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    z-index: 2;
+    position: relative;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--sys-border);
+    padding-bottom: 12px;
+}
+
+.bento-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bento-id {
+    color: var(--widget-color);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border: 1px solid var(--widget-color);
+    border-radius: 2px;
+}
+
+.bento-title {
+    color: var(--sys-text-bright);
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+}
+
+.bento-status-light {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--widget-color);
+    box-shadow: 0 0 8px var(--widget-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.4;
+    }
+}
+
+.bento-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    position: relative;
+}
+
+/* =========================================================================
+   Dossier widget (full-width banner)
+   ========================================================================= */
+.dossier-layout {
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.dossier-stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    border-left: 1px solid var(--sys-border);
+    padding-left: 30px;
+    min-width: 200px;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.dossier-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ds-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--sys-text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.ds-value {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--sys-text-bright);
+    letter-spacing: 0.02em;
+}
+
+.ds-online {
+    color: var(--sys-accent-good);
+    text-shadow: 0 0 8px var(--sys-accent-good);
+}
+
+.ds-button {
+    display: inline-flex;
+    align-items: center;
+    color: var(--widget-color);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    padding: 8px 16px;
+    border: 1px solid var(--widget-color);
+    border-radius: 2px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    margin-top: 4px;
+    width: fit-content;
+}
+
+.ds-button:hover {
+    background-color: var(--widget-color);
+    color: var(--sys-bg);
+    box-shadow: 0 0 15px -3px var(--widget-color);
+}
+
+/* =========================================================================
+   Profile picture (dossier / intro)
+   ========================================================================= */
+.home-profile-pic {
+    width: 160px;
+    height: 160px;
+    border: 1px solid var(--sys-border);
+    flex-shrink: 0;
+    position: relative;
+    background-color: var(--sys-bg);
+    padding: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 25px -10px var(--widget-color);
+}
+
+.home-profile-pic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--widget-color);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.home-profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.2) contrast(1.1);
+}
+
+/* Intro text */
+.home-intro-text h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--sys-text-bright);
+    margin-bottom: 2px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.home-intro-text .role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--widget-color);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.home-intro-text .bio {
+    font-size: var(--text-sm);
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: var(--sys-text-main);
+    max-width: 480px;
+}
+
+
+
+/* =========================================================================
+   Logs / posts list widget
+   ========================================================================= */
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Shared list item styles (used in both the bento logs and posts grid) */
+.recent-post-item {
+    background: var(--sys-bg);
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-bottom: 1px solid var(--sys-border);
+    transition: all 0.2s;
+    display: block;
+    text-decoration: none;
+    position: relative;
+    border-radius: 2px;
+}
+
+.recent-post-item:hover {
+    background: rgba(99, 102, 241, 0.06);
+    /* Indigo-ish bg */
+    border-color: var(--sys-accent-alt);
+}
+
+.recent-post-item:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.recent-post-item:last-child:hover {
+    border-bottom-color: var(--sys-accent-alt);
+}
+
+.rp-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--sys-text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.rp-title {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 600;
+    color: var(--sys-text-bright);
+    transition: color 0.2s;
+}
+
+.recent-post-item:hover .rp-title {
+    color: var(--sys-accent-alt);
+}
+
+/* Posts grid (archive / database view) */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1px;
+    background-color: var(--sys-border);
+}
+
+/* =========================================================================
+   Audio widget
+   ========================================================================= */
+.audio-track-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.audio-album-art {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(148, 163, 184, 0.05);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: var(--widget-color);
+    border: 1px solid var(--widget-color);
+    box-shadow: 0 0 8px -2px var(--widget-color);
+}
+
+.audio-album-art .sys-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.audio-details {
+    flex-grow: 1;
+}
+
+.audio-track-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.audio-status {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--widget-color);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.audio-title {
+    font-size: 1.1rem;
+    color: var(--sys-text-bright);
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.audio-artist {
+    font-size: 0.9rem;
+    color: var(--sys-text-muted);
+}
+
+/* Progress bar */
+.audio-progress {
+    margin-bottom: 15px;
+    margin-top: auto;
+}
+
+.progress-bar-bg {
+    height: 3px;
+    background-color: var(--sys-border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--widget-color);
+    box-shadow: 0 0 6px 1px var(--widget-color);
+    border-radius: 2px;
+}
+
+.progress-time {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--sys-text-muted);
+}
+
+/* Playback controls */
+.audio-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+    flex-shrink: 0;
+}
+
+.audio-controls .sys-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    color: var(--sys-text-muted);
+    border: 1px solid var(--sys-border);
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.audio-controls .sys-action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.audio-controls .sys-action-btn:hover {
+    color: var(--widget-color);
+    border-color: var(--widget-color);
+    box-shadow: 0 0 8px -2px var(--widget-color);
+}
+
+.audio-controls .play-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 2px;
+    background-color: transparent;
+    color: var(--widget-color);
+    border: 1px solid var(--widget-color);
+    box-shadow:
+        0 0 10px -3px var(--widget-color),
+        inset 0 0 20px -10px var(--widget-color);
+}
+
+/* =========================================================================
+   Biometrics widget
+   ========================================================================= */
+.biometrics-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.bio-stats-col {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+}
+
+.bio-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(148, 163, 184, 0.03);
+    padding: 10px 12px;
+    border-radius: 2px;
+    border-left: 2px solid var(--widget-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.bio-stat::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    background: linear-gradient(to right, transparent, var(--widget-color));
+    opacity: 0.03;
+    pointer-events: none;
+}
+
+.bio-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--sys-text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.bio-value {
+    font-size: 1.1rem;
+    color: var(--sys-text-bright);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.bio-chart-col {
+    flex-grow: 1;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    border: 1px solid var(--sys-border);
+    position: relative;
+}
+
+.bio-chart-col::before {
+    content: 'REAL-TIME TELEMETRY';
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: var(--widget-color);
+    opacity: 0.4;
+    letter-spacing: 0.1em;
+}
+
+.bio-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.bio-chart .bar {
+    flex: 1;
+    background: linear-gradient(to top, var(--widget-color), transparent);
+    background-color: var(--widget-color);
+    border-radius: 1px 1px 0 0;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+    min-height: 2px;
+}
+
+.bio-chart .bar:hover {
+    opacity: 1;
+    box-shadow: 0 0 10px var(--widget-color);
+    transform: scaleX(1.1);
+}
+
+/* =========================================================================
+   Legacy flex-col helper (kept for backwards compat)
+   ========================================================================= */
+.flex-col {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
