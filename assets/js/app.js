@@ -296,9 +296,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!header.id) {
                 let textId = header.innerText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                 if (!textId) textId = 'heading-' + index;
+
+                // Ensure ID starts with a letter to be a safe CSS selector
+                if (/^[0-9]/.test(textId)) {
+                    textId = 'header-' + textId;
+                }
+
                 let uniqueId = textId;
                 let counter = 1;
-                while (document.getElementById(uniqueId) || container.querySelector(`#${uniqueId}`)) {
+                while (document.getElementById(uniqueId) || container.querySelector(`[id="${uniqueId}"]`)) {
                     uniqueId = textId + '-' + counter;
                     counter++;
                 }
@@ -435,55 +441,61 @@ document.addEventListener('DOMContentLoaded', () => {
         articleContentContainer.classList.add('fade-out');
 
         setTimeout(() => {
-            // Populate Sticky Header
-            contentBreadcrumb.innerText = `${post.collection} / ${post.subCollection}`;
-            contentTitle.innerText = post.title.toUpperCase();
-            contentDate.innerText = post.date;
+            try {
+                // Populate Sticky Header
+                if (contentBreadcrumb) contentBreadcrumb.innerText = `${post.collection} / ${post.subCollection}`;
+                if (contentTitle) contentTitle.innerText = post.title.toUpperCase();
+                if (contentDate) contentDate.innerText = post.date;
 
-            // Populate Marquee Text
-            if (marqueeText) {
-                marqueeText.innerText = `${post.collection} / ${post.subCollection} // ${post.title.toUpperCase()}`;
-            }
+                // Populate Marquee Text
+                if (marqueeText) {
+                    marqueeText.innerText = `${post.collection} / ${post.subCollection} // ${post.title.toUpperCase()}`;
+                }
 
-            // Show Sticky Header if hidden
-            if (contentHeader.style.visibility === 'hidden') {
-                contentHeader.style.display = 'block';
-                contentHeader.style.visibility = 'visible';
-                contentHeader.style.opacity = '1';
-            }
+                // Show Sticky Header if hidden
+                if (contentHeader && (contentHeader.style.visibility === 'hidden' || contentHeader.style.opacity === '0')) {
+                    contentHeader.style.display = 'block';
+                    contentHeader.style.visibility = 'visible';
+                    contentHeader.style.opacity = '1';
+                }
 
-            // Populate Scrolling Article Content (Parsed from Markdown)
-            articleContentContainer.innerHTML = marked.parse(post.content);
+                // Populate Scrolling Article Content
+                if (typeof marked !== 'undefined') {
+                    articleContentContainer.innerHTML = marked.parse(post.content);
+                } else {
+                    articleContentContainer.innerText = post.content;
+                    console.error("Marked library not found. Rendering raw text.");
+                }
 
-            // Generate Outline
-            generateOutline(articleContentContainer);
+                // Generate Outline
+                generateOutline(articleContentContainer);
 
-            // Process Mermaid Blocks
-            const mermaidBlocks = articleContentContainer.querySelectorAll('code.language-mermaid');
-            mermaidBlocks.forEach(block => {
-                const parent = block.parentElement; // The <pre> wrapper
-                const div = document.createElement('div');
-                div.className = 'mermaid';
-                div.textContent = block.textContent;
-                parent.replaceWith(div);
-            });
+                // Process Mermaid Blocks
+                const mermaidBlocks = articleContentContainer.querySelectorAll('code.language-mermaid');
+                mermaidBlocks.forEach(block => {
+                    const parent = block.parentElement;
+                    const div = document.createElement('div');
+                    div.className = 'mermaid';
+                    div.textContent = block.textContent;
+                    parent.replaceWith(div);
+                });
 
-            // Run Mermaid (catch error gracefully if syntax is bad)
-            if (typeof mermaid !== 'undefined' && mermaidBlocks.length > 0) {
-                // Use a dark theme to match your dashboard
-                mermaid.initialize({ startOnLoad: false, theme: 'dark' });
-                mermaid.run({ querySelector: '.mermaid' }).catch(err => console.error(err));
-            }
+                if (typeof mermaid !== 'undefined' && mermaidBlocks.length > 0) {
+                    mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+                    mermaid.run({ querySelector: '.mermaid' }).catch(err => console.error(err));
+                }
 
-            // Scroll to top of scroller
-            contentScroller.scrollTop = 0;
+                contentScroller.scrollTop = 0;
+            } catch (err) {
+                console.error("CRITICAL ERROR DURING RENDER:", err);
+            } finally {
+                // Always remove fade-out to prevent blank screen
+                articleContentContainer.classList.remove('fade-out');
 
-            // Fade in transition
-            articleContentContainer.classList.remove('fade-out');
-
-            // Show mini player on post
-            if (window.setMiniPlayerVisibility) {
-                window.setMiniPlayerVisibility(true);
+                // Show mini player on post
+                if (window.setMiniPlayerVisibility) {
+                    window.setMiniPlayerVisibility(true);
+                }
             }
         }, 200);
     };
@@ -533,7 +545,94 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /* INIT */
+    /* 6. LIGHTBOX / ZOOM LOGIC */
+    const lightbox = document.getElementById('sys-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const zoomInBtn = document.getElementById('zoom-in');
+    const zoomOutBtn = document.getElementById('zoom-out');
+    const zoomResetBtn = document.getElementById('zoom-reset');
+    const lightboxContent = document.getElementById('lightbox-content');
+
+    let currentZoom = 1;
+    let isDragging = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    const openLightbox = (src) => {
+        if (!lightbox || !lightboxImg) return;
+        lightboxImg.src = src;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        resetZoom();
+    };
+
+    const closeLightbox = () => {
+        if (!lightbox) return;
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    const resetZoom = () => {
+        currentZoom = 0.6; // Reduced default zoom level
+        updateZoom();
+        if (lightboxContent) {
+            lightboxContent.scrollLeft = 0;
+            lightboxContent.scrollTop = 0;
+        }
+    };
+
+    const updateZoom = () => {
+        if (lightboxImg) {
+            lightboxImg.style.transform = `scale(${currentZoom})`;
+        }
+    };
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (zoomInBtn) zoomInBtn.addEventListener('click', (e) => { e.stopPropagation(); currentZoom += 0.2; updateZoom(); });
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', (e) => { e.stopPropagation(); currentZoom = Math.max(0.1, currentZoom - 0.2); updateZoom(); });
+    if (zoomResetBtn) zoomResetBtn.addEventListener('click', (e) => { e.stopPropagation(); resetZoom(); });
+
+    if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === lightboxContent) closeLightbox();
+        });
+    }
+
+    if (lightboxContent) {
+        lightboxContent.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - lightboxContent.offsetLeft;
+            startY = e.pageY - lightboxContent.offsetTop;
+            scrollLeft = lightboxContent.scrollLeft;
+            scrollTop = lightboxContent.scrollTop;
+        });
+
+        lightboxContent.addEventListener('mouseleave', () => { isDragging = false; });
+        lightboxContent.addEventListener('mouseup', () => { isDragging = false; });
+
+        lightboxContent.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - lightboxContent.offsetLeft;
+            const y = e.pageY - lightboxContent.offsetTop;
+            const walkX = (x - startX);
+            const walkY = (y - startY);
+            lightboxContent.scrollLeft = scrollLeft - walkX;
+            lightboxContent.scrollTop = scrollTop - walkY;
+        });
+    }
+
+    if (articleContentContainer) {
+        articleContentContainer.addEventListener('click', (e) => {
+            const container = e.target.closest('.zoom-image-container');
+            if (container) {
+                const img = container.querySelector('img');
+                if (img) openLightbox(img.src);
+            }
+        });
+    }
+
+    // Initial Path Routing...
     if (typeof blogData !== 'undefined') {
         renderSidebarTree();
 

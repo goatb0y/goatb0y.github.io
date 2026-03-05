@@ -6,28 +6,28 @@ OUTPUT_FILE = 'assets/js/data.js'
 
 def parse_markdown_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+        file_content = f.read()
     
     frontmatter = {}
-    content = []
+    content = ""
     
-    in_frontmatter = False
-    
-    if lines and lines[0].strip() == '---':
-        in_frontmatter = True
-        for i in range(1, len(lines)):
-            line = lines[i]
-            if line.strip() == '---':
-                content = lines[i+1:]
-                break
-            else:
+    if file_content.startswith('---'):
+        parts = file_content.split('---', 2)
+        if len(parts) >= 3:
+            fm_text = parts[1]
+            content = parts[2]
+            
+            for line in fm_text.split('\n'):
                 if ':' in line:
                     key, val = line.split(':', 1)
-                    frontmatter[key.strip().lower()] = val.strip()
+                    # Strip whitespace and any quotes
+                    frontmatter[key.strip().lower()] = val.strip().strip('"').strip("'")
+        else:
+            content = file_content
     else:
-        content = lines
+        content = file_content
         
-    return frontmatter, "".join(content)
+    return frontmatter, content.strip()
 
 def build_data():
     blog_data = []
