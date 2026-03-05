@@ -1,148 +1,360 @@
 /* =========================================================================
    _mobile.css
    Responsive overrides for screens ≤ 900px
+   Professional, readable, and elegant mobile experience.
    ========================================================================= */
 
 @media (max-width: 900px) {
 
-    /* --- Body --- */
+    /* --- Core Structure --- */
     body.system-dashboard {
         height: auto;
         min-height: 100vh;
-        overflow: auto;
-    }
-
-    /* --- Dashboard wrapper --- */
-    .dashboard-wrapper {
-        flex-direction: column;
-        height: calc(100vh - var(--top-bar-h) - var(--bot-bar-h));
-    }
-
-    /* --- Mobile top bar (shown only on mobile) --- */
-    .mobile-top-bar {
-        display: flex;
-        flex-shrink: 0;
-    }
-
-    .mobile-nav-toggle {
-        display: block;
-        flex-shrink: 0;
-        border-right-color: var(--sys-border);
-    }
-
-    /* --- Compact header hides completely on mobile (marquee takes over) --- */
-    body.scrolled-down .content-header {
-        max-height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-        overflow: hidden;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        margin: 0;
-    }
-
-    body.scrolled-down .marquee-container {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* --- Sidebar becomes a full-screen drawer --- */
-    .sys-sidebar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-        transform: translateY(-100%);
-        z-index: 100;
-        border-right: none;
-        border-bottom: 1px solid var(--sys-border);
-    }
-
-    .sys-sidebar.active {
-        transform: translateY(0);
-    }
-
-    .sidebar-bottom {
-        padding-bottom: 30px;
-    }
-
-    /* --- Hide desktop-only elements --- */
-    .header-spacer {
-        display: none !important;
-    }
-
-    #outline-container {
-        display: none !important;
-    }
-
-    /* --- Main pane --- */
-    .sys-main-pane {
-        flex-grow: 1;
-        height: 100%;
-    }
-
-    .content-header {
-        padding: 20px 20px 15px 20px;
-    }
-
-    .post-title {
-        font-size: var(--text-lg);
-    }
-
-    .content-scroller {
-        padding: 20px 20px 40px 20px;
-    }
-
-    .content-scroller.is-home {
+        overflow-x: hidden;
         overflow-y: auto;
     }
 
-    /* --- Status bars --- */
-    .sys-bar {
-        font-size: var(--text-xs);
+    .dashboard-wrapper {
+        flex-direction: column;
+        height: auto;
+        /* Allow content to determine height */
+        min-height: calc(100vh - var(--top-bar-h) - var(--bot-bar-h));
+        overflow: visible;
     }
 
-    /* --- Bento grid: single column, auto rows --- */
+    /* --- Mobile Top Bar --- */
+    .mobile-top-bar {
+        display: flex;
+        background-color: var(--sys-panel);
+        border-bottom: 1px solid var(--sys-border);
+        height: 50px;
+        position: sticky;
+        top: 0;
+        z-index: 150;
+        align-items: center;
+        padding: 0 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--sys-accent-dim);
+        border: 1px solid var(--sys-accent);
+        color: var(--sys-accent);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .marquee-container {
+        flex-grow: 1;
+        margin-left: 15px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        opacity: 0.8;
+    }
+
+    /* --- Sidebar / Drawer --- */
+    .sys-sidebar {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 50px);
+        background-color: var(--sys-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        transform: translateX(-100%);
+        z-index: 200;
+        border-right: none;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sys-sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-top {
+        padding: 24px;
+        flex-grow: 1;
+    }
+
+    .sidebar-bottom {
+        padding: 24px;
+        background: var(--sys-panel);
+        border-top: 1px solid var(--sys-border);
+    }
+
+    /* Remove the pseudo-label as the toggle button is now visible */
+    .sys-sidebar::before {
+        display: none;
+    }
+
+    /* --- Main Pane --- */
+    .sys-main-pane {
+        flex-grow: 1;
+        height: auto;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .content-scroller {
+        padding: 24px 16px 120px 16px;
+        overflow-x: hidden;
+        overflow-y: visible;
+        width: 100%;
+    }
+
+    .content-header {
+        padding: 24px 16px;
+        width: 100%;
+        background-color: rgba(3, 4, 7, 0.95);
+    }
+
+    .post-title {
+        font-size: 1.75rem;
+        /* Better scale for mobile screens */
+        line-height: 1.2;
+    }
+
+    /* --- Bento Grid Fixes --- */
     .home-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        grid-template-columns: 100%;
+        /* Force single column to avoid overflow */
         grid-template-areas:
             "dossier"
             "logs"
             "audio"
             "biometrics";
+        gap: 16px;
+        padding: 0;
+        /* Let scroller handle padding */
         height: auto;
         overflow: visible;
+        width: 100%;
     }
 
-    .bento-logs {
-        min-height: 300px;
+    .bento-widget {
+        padding: 20px;
+        /* More breathing room inside cards */
+        width: 100%;
+        margin-bottom: 0px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        /* Prevent internal content clipping */
     }
 
-    /* Dossier stacks vertically */
+    /* Dossier Layout Overhaul */
     .dossier-layout {
         flex-direction: column !important;
-        align-items: flex-start;
-        gap: 20px;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+        width: 100%;
+    }
+
+    .home-intro-text {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .home-intro-text .bio {
+        max-width: 100%;
+        font-size: var(--text-sm);
     }
 
     .dossier-stats {
         border-left: none;
         border-top: 1px solid var(--sys-border);
         padding-left: 0;
-        padding-top: 20px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 20px;
-        min-width: unset;
+        padding-top: 24px;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        align-items: stretch;
+        /* Full width buttons */
+        min-width: 0;
+        /* Fix clipping */
     }
 
-    /* Biometrics stacks vertically */
-    .biometrics-widget {
+    .ds-button {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+        margin-top: 8px;
+    }
+
+    /* Mini Player Adjustment */
+    .mini-player {
+        bottom: 10px;
+        min-width: calc(100% - 32px);
+        left: 16px;
+        transform: translateY(150%);
+        margin: 0;
+    }
+
+    .mini-player.is-visible {
+        transform: translateY(0);
+    }
+
+    .mini-player-inner {
+        padding: 10px 12px;
+    }
+
+    .home-profile-pic {
+        width: 120px;
+        /* Slightly smaller for mobile */
+        height: 120px;
+    }
+
+    /* Audio Widget Overhaul */
+    .audio-main-layout {
         flex-direction: column;
+        gap: 24px;
         align-items: stretch;
+    }
+
+    .audio-visualizer-container {
+        width: 100%;
+        height: 160px;
+        /* Larger visualizer on mobile stack */
+    }
+
+    .audio-controls {
+        justify-content: center;
+        gap: 24px;
+    }
+
+    /* Logs Widget Overhaul */
+    .bento-logs {
+        min-height: unset;
+    }
+
+    .recent-post-item {
+        padding: 16px;
+        /* Better tap target */
+        width: 100%;
+    }
+
+    .rp-title {
+        font-size: 1rem;
+        word-wrap: break-word;
+        /* Fix clipping of long titles */
+    }
+
+    /* Biometrics Widget Overhaul */
+    .biometrics-widget {
+        gap: 24px;
+        width: 100%;
+    }
+
+    .bio-stats-col {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .bio-stat {
+        padding: 16px;
+        width: 100%;
+    }
+
+    /* --- Typography & Hierarchy --- */
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    /* --- Article Content --- */
+    .article-content img {
+        height: auto !important;
+        margin: 20px 0;
+    }
+
+    /* --- Post Content Layout --- */
+    .content-body-layout {
+        display: block;
+        /* Stack outline and content */
+        width: 100%;
+    }
+
+    #outline-container {
+        display: none !important;
+        /* Hide side outline on mobile */
+    }
+
+    .header-spacer {
+        display: none !important;
+        /* Remove desktop alignment spacer */
+    }
+
+    .article-content {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* --- Header Refinements --- */
+    .content-header-inner {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    body.scrolled-down .content-header {
+        padding: 8px 16px;
+    }
+
+    /* --- Status Bars --- */
+    .sys-bar {
+        padding: 0 16px;
+        font-size: 0.65rem;
+    }
+
+    .sys-bar.top {
+        display: none;
+        /* Marquee and Mobile Bar take over */
+    }
+
+    .sys-bar.bottom {
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+
+    /* --- Utility --- */
+    .u-mobile-hidden {
+        display: none !important;
+    }
+
+    /* Ensure images don't overflow */
+    img,
+    svg,
+    iframe,
+    video {
+        max-width: 100%;
+        height: auto;
     }
 }

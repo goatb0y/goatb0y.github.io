@@ -194,7 +194,7 @@
    Dossier widget (full-width banner)
    ========================================================================= */
 .dossier-layout {
-    flex-direction: row !important;
+    flex-direction: row;
     align-items: flex-start;
     gap: 30px;
 }
