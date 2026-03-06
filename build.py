@@ -35,44 +35,59 @@ def build_data():
     if not os.path.exists(CONTENT_DIR):
         print(f"Directory '{CONTENT_DIR}' not found.")
         return
-        
-    for collection in os.listdir(CONTENT_DIR):
-        collection_path = os.path.join(CONTENT_DIR, collection)
-        if not os.path.isdir(collection_path): continue
+    
+    # Walk through the CONTENT_DIR and find all .md files
+    for root, dirs, files in os.walk(CONTENT_DIR):
+        for filename in files:
+            if not filename.endswith('.md'): continue
+                
+            filepath = os.path.join(root, filename)
+            rel_path = os.path.relpath(filepath, CONTENT_DIR)
+            path_parts = rel_path.split(os.sep)
             
-        for sub_collection in os.listdir(collection_path):
-            sub_collection_path = os.path.join(collection_path, sub_collection)
-            if not os.path.isdir(sub_collection_path): continue
+            # Extract collection and sub-collection
+            # Expected: content/Collection/SubCollection/file.md
+            # Or: content/Collection/file.md
+            
+            collection = "Misc"
+            sub_collection = "General"
+            
+            if len(path_parts) >= 3:
+                collection = path_parts[0]
+                sub_collection = path_parts[1]
+            elif len(path_parts) == 2:
+                collection = path_parts[0]
+                sub_collection = "General"
+            elif len(path_parts) == 1:
+                # Top level file in content folder
+                collection = "General"
+                sub_collection = "Posts"
                 
-            for filename in os.listdir(sub_collection_path):
-                if not filename.endswith('.md'): continue
-                    
-                filepath = os.path.join(sub_collection_path, filename)
-                frontmatter, content = parse_markdown_file(filepath)
-                
-                # Fetch frontmatter values or defaults
-                title = frontmatter.get('title', filename.replace('.md', ''))
-                date = frontmatter.get('date', 'Unknown Date')
-                summary = frontmatter.get('summary', '')
-                
-                # Priority: slug > id > generated from path
-                post_id = frontmatter.get('slug')
-                if not post_id:
-                    post_id = frontmatter.get('id', f"{collection}-{sub_collection}-{filename}".replace(' ', '-').lower()[:-3])
-                
-                # Ensure post_id doesn't have leading/trailing slashes if used for hash
-                post_id = post_id.strip('/')
-                
-                post = {
-                    'id': post_id,
-                    'title': title,
-                    'date': date,
-                    'collection': collection,
-                    'subCollection': sub_collection,
-                    'summary': summary,
-                    'content': content
-                }
-                blog_data.append(post)
+            frontmatter, content = parse_markdown_file(filepath)
+            
+            # Fetch frontmatter values or defaults
+            title = frontmatter.get('title', filename.replace('.md', ''))
+            date = frontmatter.get('date', 'Unknown Date')
+            summary = frontmatter.get('summary', '')
+            
+            # Priority: slug > id > generated from path
+            post_id = frontmatter.get('slug')
+            if not post_id:
+                post_id = frontmatter.get('id', rel_path.replace(os.sep, '-').replace(' ', '-').lower()[:-3])
+            
+            # Ensure post_id doesn't have leading/trailing slashes if used for hash
+            post_id = post_id.strip('/')
+            
+            post = {
+                'id': post_id,
+                'title': title,
+                'date': date,
+                'collection': collection,
+                'subCollection': sub_collection,
+                'summary': summary,
+                'content': content
+            }
+            blog_data.append(post)
                 
     # Sort posts by date descending
     blog_data.sort(key=lambda x: x['date'], reverse=True)

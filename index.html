@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Anaheim:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/styles.css">
 
@@ -158,32 +158,33 @@
                             </div>
                             <div class="bento-content dossier-layout">
                                 <div class="home-profile-pic">
-                                    <img src="/assets/images/profile.webp" alt="Siddharth Arya">
+                                    <video id="face-video" muted playsinline preload="auto"
+                                        style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                                        <source src="/assets/images/face_grid.webm" type="video/webm">
+                                    </video>
                                 </div>
                                 <div class="home-intro-text">
                                     <h1>SIDDHARTH ARYA</h1>
                                     <p class="role">DESIGN RESEARCHER / MAKER</p>
-                                    <p class="bio">Techno-optimist design generalist. Focused on meaningful design,
-                                        systems thinking, and elegant integrations between human needs and technical
-                                        possibility. 5+ years of experience in the hardware innovation ecosystem.
-                                        Working on Public Service System problems now.
-                                        Open to new projects </p>
+                                    <p class="bio">I do Service Design, Design Research, and both Physical and Digital
+                                        Prototyping. <br> 5+ years of experience in setting up makerspaces and community
+                                        engagement in hardware innovation ecosystems. </p>
                                 </div>
                                 <div class="dossier-stats">
                                     <div class="dossier-stat">
                                         <span class="ds-label">EMAIL</span>
-                                        <a href="mailto:hello@sid.com.de"
-                                            class="ds-value ds-button">HELLO@SID.COM.DE</a>
+                                        <a href="mailto:hello@sid.com.de" class="ds-value ds-button">HELLO@SID.COM.DE
+                                            ↗</a>
                                     </div>
                                     <div class="dossier-stat">
                                         <span class="ds-label">LINKEDIN</span>
                                         <a href="https://linkedin.com/in/siddoh" target="_blank"
-                                            class="ds-value ds-button">LINKEDIN.COM/IN/SIDDOH</a>
+                                            class="ds-value ds-button">LINKEDIN.COM/IN/SIDDOH ↗</a>
                                     </div>
                                     <div class="dossier-stat">
                                         <span class="ds-label">CURRICULUM VITAE</span>
                                         <a href="https://drive.google.com/file/d/18RhpkXNTpdee1n3KLuqbKZqa_usMnH8Y/view?usp=drive_link"
-                                            target="_blank" class="ds-value ds-button">VIEW DOSSIER / CV ↗</a>
+                                            target="_blank" class="ds-value ds-button"> VIEW CV ↗</a>
                                     </div>
                                 </div>
                             </div>
@@ -195,13 +196,129 @@
                             <div class="bento-header">
                                 <div class="bento-title-wrapper">
                                     <span class="bento-id">02-B</span>
-                                    <span class="bento-title">DATABASE // RECENT LOGS</span>
+                                    <div class="bento-tabs">
+                                        <button class="bento-tab active" data-tab="recent-posts-list">RECENT
+                                            LOGS</button>
+                                        <button class="bento-tab" data-tab="career-journey">CAREER JOURNEY</button>
+                                    </div>
                                 </div>
                                 <div class="bento-status-light"></div>
                             </div>
                             <div class="bento-content">
                                 <div id="recent-posts-list" class="posts-list">
                                     <!-- Populated by JS -->
+                                </div>
+
+                                <div id="career-journey" class="timeline-container">
+                                    <div class="career-timeline">
+                                        <div class="timeline-item current">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2025 — PRESENT</div>
+                                                <div class="time-title">VOLUNTEER & COMMUNITY ENGAGEMENT</div>
+                                                <div class="time-org">MAKERSPACE LINKÖPING / RÖDA KORSET</div>
+                                                <div class="time-desc">IT infrastructure administration, electronics
+                                                    evaluation, and 3D printing workshop facilitation in Linköping.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2023 — 2025</div>
+                                                <div class="time-title">MSC. DESIGN (DESIGN RESEARCHER)</div>
+                                                <div class="time-org">LINKÖPING UNIVERSITY, SWEDEN</div>
+                                                <div class="time-desc">Specialized in service design and participatory
+                                                    mapping. Thesis on designing for existential meaning.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2019 — 2023</div>
+                                                <div class="time-title">PROTOTYPING SERVICES LEAD</div>
+                                                <div class="time-org">T-WORKS FOUNDATION, INDIA</div>
+                                                <div class="time-desc">Led service design for hardware innovation
+                                                    ecosystems. Managed engineering teams and built national-scale
+                                                    prototyping infrastructure.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2018 — 2019</div>
+                                                <div class="time-title">MAKERSPACE CONSULTANT</div>
+                                                <div class="time-org">IKP KNOWLEDGE PARK</div>
+                                                <div class="time-desc">Directed the design and implementation of two
+                                                    regional makerspace facilities (Belgaum & Mysore).</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2017</div>
+                                                <div class="time-title">DIPLOMA IN DIGITAL FABRICATION</div>
+                                                <div class="time-org">FABLAB CEPT (MIT CBA)</div>
+                                                <div class="time-desc">Intensive program in hardware prototyping and
+                                                    design-to-fabrication workflows.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-point"></div>
+                                            <div class="timeline-content">
+                                                <div class="time-period">2010 — 2016</div>
+                                                <div class="time-title">BACHELOR IN ARCHITECTURE</div>
+                                                <div class="time-org">UNIVERSITY OF MYSORE</div>
+                                                <div class="time-desc">Foundational training in spatial systems,
+                                                    architectural design, and complex problem-solving.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-matrix">
+                                        <div class="skill-group">
+                                            <div class="skill-label">DESIGN & RESEARCH</div>
+                                            <div class="skill-tags">
+                                                <span class="skill-tag">SERVICE DESIGN</span>
+                                                <span class="skill-tag">CO-DESIGN</span>
+                                                <span class="skill-tag">GIGA-MAPPING</span>
+                                                <span class="skill-tag">NORM-CRITICAL DESIGN</span>
+                                                <span class="skill-tag">SYSTEMIC INTERVENTION</span>
+                                            </div>
+                                        </div>
+                                        <div class="skill-group">
+                                            <div class="skill-label">HARDWARE / FAB</div>
+                                            <div class="skill-tags">
+                                                <span class="skill-tag">3D PRINTING</span>
+                                                <span class="skill-tag">CNC MACHINING</span>
+                                                <span class="skill-tag">EMBEDDED SYSTEMS</span>
+                                                <span class="skill-tag">CAD/CAM</span>
+                                            </div>
+                                        </div>
+                                        <div class="skill-group">
+                                            <div class="skill-label">TOOLS</div>
+                                            <div class="skill-tags">
+                                                <span class="skill-tag">ADOBE CC</span>
+                                                <span class="skill-tag">PARAMETRIC CAD</span>
+                                                <span class="skill-tag">OBSIDIAN / NOTION</span>
+                                                <span class="skill-tag">AFFINE PRO</span>
+                                            </div>
+                                        </div>
+                                        <div class="skill-group">
+                                            <div class="skill-label">LANGUAGES</div>
+                                            <div class="skill-tags">
+                                                <span class="skill-tag">ENGLISH (BILINGUAL)</span>
+                                                <span class="skill-tag">SWEDISH (A2/B1)</span>
+                                                <span class="skill-tag">KANNADA (NATIVE)</span>
+                                                <span class="skill-tag">HINDI (PRO)</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +329,7 @@
                             <div class="bento-header">
                                 <div class="bento-title-wrapper">
                                     <span class="bento-id">03-C</span>
-                                    <span class="bento-title">SUBSPACE AUDIO // YT MUSIC</span>
+                                    <span class="bento-title">SUBSPACE AUDIO</span>
                                 </div>
                                 <div class="bento-status-light"></div>
                             </div>
@@ -284,7 +401,7 @@
                             <div class="bento-header">
                                 <div class="bento-title-wrapper">
                                     <span class="bento-id">04-D</span>
-                                    <span class="bento-title">BIOMETRICS // QUANTIFIED SELF</span>
+                                    <span class="bento-title">QUANTIFIED SELF</span>
                                 </div>
                                 <div class="bento-status-light"></div>
                             </div>
@@ -373,7 +490,7 @@
     <!-- BOTTOM BAR (Static) -->
     <footer class="sys-bar bottom">
         <div class="sys-contact">COMM-LINK: <a href="mailto:hello@sid.com.de">HELLO@SID.COM.DE</a></div>
-        <div class="sys-copyright">&copy; 2026 LCARS CORE v6.0</div>
+        <div class="sys-copyright">&copy; 2026 SIGGE DESIGNS v6.0</div>
     </footer>
 
     <!-- LIGHTBOX (For Zoomable Images) -->
@@ -392,6 +509,7 @@
     <!-- Application Logic -->
     <script src="/assets/js/audio.js"></script>
     <script src="/assets/js/biometrics.js"></script>
+    <script src="/assets/js/face-effect.js"></script>
     <script src="/assets/js/app.js"></script>
 </body>
 

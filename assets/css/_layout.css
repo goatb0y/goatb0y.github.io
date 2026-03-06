@@ -61,3 +61,31 @@ body.system-dashboard {
     position: relative;
     height: calc(100vh - var(--top-bar-h) - var(--bot-bar-h));
 }
+
+/* =========================================================================
+   Global Scrollbar Theme (Retro / Dark)
+   ========================================================================= */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--sys-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--sys-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--sys-accent-alt);
+    box-shadow: 0 0 10px var(--sys-accent-alt);
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--sys-border) var(--sys-bg);
+}

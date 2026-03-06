@@ -24,6 +24,7 @@
 
 /* 7. Home / bento widgets */
 @import url('_home.css');
+@import url('_timeline.css');
 @import url('_audio.css');
 
 /* 8. Responsive overrides (always last) */

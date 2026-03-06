@@ -1,0 +1,225 @@
+/* =========================================================================
+   _timeline.css
+   Vertical timeline and skills matrix for Career Journey tab
+   ========================================================================= */
+
+.timeline-container {
+    display: none;
+    /* Toggled by JS */
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    gap: 30px;
+    padding: 10px 5px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================================================
+   Vertical Timeline
+   ========================================================================= */
+.career-timeline {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.career-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: var(--sys-border);
+    border-radius: 1px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-point {
+    position: absolute;
+    left: -30px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    background: var(--sys-bg);
+    border: 2px solid var(--sys-accent-alt);
+    border-radius: 2px;
+    z-index: 2;
+    box-shadow: 0 0 8px var(--sys-accent-alt);
+}
+
+.timeline-item.current .timeline-point {
+    background: var(--sys-accent-alt);
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--sys-accent-alt);
+    }
+
+    50% {
+        opacity: 0.6;
+        box-shadow: 0 0 2px var(--sys-accent-alt);
+    }
+
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--sys-accent-alt);
+    }
+}
+
+.timeline-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.time-period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--sys-accent-alt);
+    letter-spacing: 0.1em;
+    font-weight: 500;
+}
+
+.time-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--sys-text-bright);
+    letter-spacing: 0.02em;
+}
+
+.time-org {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--sys-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.time-desc {
+    font-size: var(--text-xs);
+    color: var(--sys-text-main);
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+/* =========================================================================
+   Skills Section
+   ========================================================================= */
+.skills-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--sys-border);
+}
+
+.skill-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skill-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--sys-accent-alt);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--sys-border);
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--sys-text-muted);
+    background: rgba(148, 163, 184, 0.05);
+    padding: 2px 6px;
+    border: 1px solid var(--sys-border);
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+.skill-tag:hover {
+    border-color: var(--sys-accent-alt);
+    color: var(--sys-text-bright);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+/* Tab logic classes */
+.bento-tabs {
+    display: flex;
+    gap: 15px;
+    margin-left: 10px;
+}
+
+.bento-tab {
+    background: none;
+    border: none;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--sys-text-muted);
+    cursor: pointer;
+    padding: 2px 0;
+    position: relative;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.bento-tab:hover {
+    color: var(--sys-text-bright);
+}
+
+.bento-tab.active {
+    color: var(--sys-accent-alt);
+}
+
+.bento-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: var(--sys-accent-alt);
+    box-shadow: 0 0 8px var(--sys-accent-alt);
+}
+
+@media (max-width: 600px) {
+    .skills-matrix {
+        grid-template-columns: 1fr;
+    }
+}

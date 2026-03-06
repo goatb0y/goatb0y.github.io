@@ -16,8 +16,19 @@
     font-family: var(--font-mono);
     color: var(--sys-text-muted);
     font-size: var(--text-xs);
+    /* Keeping title at text-xs to maintain hierarchy as a secondary label */
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+#post-outline .folder-item {
+    font-size: var(--text-base);
+    padding: 2px 8px;
+}
+
+#post-outline .folder-name-inner {
+    font-weight: 400;
 }

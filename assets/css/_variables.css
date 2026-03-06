@@ -12,11 +12,11 @@
     --sys-border: #1a2233;
     /* Subtle grid lines            */
 
-    --sys-text-bright: #f2f3f4;
+    --sys-text-bright: #c0c5ca;
     /* Slate 400 — Muted off-white */
-    --sys-text-main: #cad2dd;
+    --sys-text-main: #aab0b8;
     /* Slate 500 — Low contrast grey */
-    --sys-text-muted: #475569;
+    --sys-text-muted: #6e7d93;
     /* Slate 600 — Deep grey */
 
     /* Accents (Shifted to 500/600 for a more subdued, 'stealth' look) */
@@ -35,8 +35,8 @@
     /* Green 600 */
 
     /* --- Typography --- */
-    --font-display: 'Outfit', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-display: 'Anaheim', sans-serif;
+    --font-body: 'Anaheim', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
     /* Type Scale */

@@ -205,42 +205,61 @@ document.addEventListener('DOMContentLoaded', () => {
             let hasCollectionMatch = false;
 
             for (const [subCol, posts] of Object.entries(subCollections)) {
-                const subId = colId + '-' + subCol.replace(/\s+/g, '-').toLowerCase();
-                if (folderState[subId] === undefined) folderState[subId] = false; // Closed by default
+                const isGeneral = subCol.toLowerCase() === 'general';
 
-                let subHtml = `<li class="tree-group sub-group">
-                    <div class="folder-item sub-folder" data-folder="${subId}">
-                        <span id="chevron-${subId}">
-                            ${icons.chevron}
-                        </span>
-                        <span class="folder-icon-wrapper" id="icon-${subId}">
-                            ${folderState[subId] || filterText ? icons.folderOpen : icons.folderClosed}
-                        </span>
-                        <span class="folder-name"><span class="folder-name-inner">${subCol}</span></span>
-                    </div>
-                    <ul class="tree-children ${folderState[subId] || filterText ? 'expanded' : ''}" id="children-${subId}">
-                `;
-                let hasSubMatch = false;
+                if (isGeneral) {
+                    posts.forEach(post => {
+                        const matchesFilter = post.title.toLowerCase().includes(lowerFilter) ||
+                            post.summary.toLowerCase().includes(lowerFilter);
+                        if (matchesFilter) {
+                            collectionHtml += `
+                                <li>
+                                    <div class="folder-item file-item post-link" data-id="${post.id}">
+                                        <span class="folder-name"><span class="folder-name-inner">${post.title}</span></span>
+                                    </div>
+                                </li>
+                            `;
+                            hasCollectionMatch = true;
+                        }
+                    });
+                } else {
+                    const subId = colId + '-' + subCol.replace(/\s+/g, '-').toLowerCase();
+                    if (folderState[subId] === undefined) folderState[subId] = false; // Closed by default
 
-                posts.forEach(post => {
-                    const matchesFilter = post.title.toLowerCase().includes(lowerFilter) ||
-                        post.summary.toLowerCase().includes(lowerFilter);
-                    if (matchesFilter) {
-                        subHtml += `
-                            <li>
-                                <div class="folder-item file-item post-link" data-id="${post.id}">
-                                    <span class="folder-name"><span class="folder-name-inner">${post.title}</span></span>
-                                </div>
-                            </li>
-                        `;
-                        hasSubMatch = true;
-                        hasCollectionMatch = true;
+                    let subHtml = `<li class="tree-group sub-group">
+                        <div class="folder-item sub-folder" data-folder="${subId}">
+                            <span id="chevron-${subId}">
+                                ${icons.chevron}
+                            </span>
+                            <span class="folder-icon-wrapper" id="icon-${subId}">
+                                ${folderState[subId] || filterText ? icons.folderOpen : icons.folderClosed}
+                            </span>
+                            <span class="folder-name"><span class="folder-name-inner">${subCol}</span></span>
+                        </div>
+                        <ul class="tree-children ${folderState[subId] || filterText ? 'expanded' : ''}" id="children-${subId}">
+                    `;
+                    let hasSubMatch = false;
+
+                    posts.forEach(post => {
+                        const matchesFilter = post.title.toLowerCase().includes(lowerFilter) ||
+                            post.summary.toLowerCase().includes(lowerFilter);
+                        if (matchesFilter) {
+                            subHtml += `
+                                <li>
+                                    <div class="folder-item file-item post-link" data-id="${post.id}">
+                                        <span class="folder-name"><span class="folder-name-inner">${post.title}</span></span>
+                                    </div>
+                                </li>
+                            `;
+                            hasSubMatch = true;
+                            hasCollectionMatch = true;
+                        }
+                    });
+
+                    subHtml += `</ul></li>`;
+                    if (hasSubMatch || !filterText) {
+                        collectionHtml += subHtml;
                     }
-                });
-
-                subHtml += `</ul></li>`;
-                if (hasSubMatch || !filterText) {
-                    collectionHtml += subHtml;
                 }
             }
 
@@ -328,8 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nameInner.className = 'folder-name-inner';
             nameInner.innerText = header.innerText;
             // Dim the sub-headers slightly to match tree hierarchy
-            nameInner.style.opacity = level > 2 ? '0.8' : '1';
-            nameInner.style.fontSize = level > 2 ? '0.75rem' : '0.8rem';
+            nameInner.style.opacity = level > 2 ? '0.7' : '1.0';
 
             nameWrapper.appendChild(nameInner);
             link.appendChild(nameWrapper);
@@ -656,6 +674,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("DATA CORE OFFLINE: data.js not found.");
         if (homeView) homeView.innerHTML = `<h2>ERROR</h2><p>Data.js not loaded.</p>`;
     }
+
+    // BENTO TAB SWITCHING
+    const bentoTabs = document.querySelectorAll('.bento-tab');
+    bentoTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            const targetId = tab.getAttribute('data-tab');
+            const widget = tab.closest('.bento-widget');
+
+            // Update tab buttons
+            widget.querySelectorAll('.bento-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update content visibility
+            const contentContainers = widget.querySelectorAll('.posts-list, .timeline-container');
+            contentContainers.forEach(container => {
+                if (container.id === targetId) {
+                    container.style.display = 'flex';
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        });
+    });
 
     // Handle browser back/forward buttons
     window.addEventListener('popstate', (event) => {
