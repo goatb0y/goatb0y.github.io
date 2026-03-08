@@ -23,13 +23,15 @@ def get_access_token():
     }
     
     response = requests.post(token_url, data=data)
-    response.raise_for_status()
+    if response.status_code != 200:
+        print(f"Auth Error Body: {response.text}")
+        response.raise_for_status()
     return response.json()["access_token"]
 
 def fetch_data(access_token):
-    # Get timestamps
-    now = datetime.datetime.utcnow()
-    start_of_today = datetime.datetime(now.year, now.month, now.day)
+    # Get timestamps using modern timezone-aware objects
+    now = datetime.datetime.now(datetime.UTC)
+    start_of_today = datetime.datetime(now.year, now.month, now.day, tzinfo=datetime.UTC)
     start_7d = start_of_today - datetime.timedelta(days=7)
     start_24h = now - datetime.timedelta(hours=24)
     
@@ -79,18 +81,22 @@ def fetch_data(access_token):
         for bucket in hr_data["bucket"]:
             avg_hr = 0
             if bucket["dataset"][0]["point"]:
-                # Point values: [avg, max, min]
                 avg_hr = int(bucket["dataset"][0]["point"][0]["value"][0]["fpVal"])
             hr_history.append(avg_hr)
     
-    if hr_history:
-        current_hr = next((h for h in reversed(hr_history) if h > 0), 72)
+    # Try alternate: Fetch most recent single point for "live" feel
+    if current_hr == 0:
+        raw_hr_url = "https://www.googleapis.com/fitness/v1/users/me/dataSources/derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm/datasets/"
+        dataset_id = f"{ts_24h}000000-{ts_now}000000" # nanos
+        raw_hr_res = requests.get(raw_hr_url + dataset_id, headers=headers)
+        raw_hr_data = raw_hr_res.json()
+        if "point" in raw_hr_data and raw_hr_data["point"]:
+            current_hr = int(raw_hr_data["point"][-1]["value"][0]["fpVal"])
 
     # 3. Fetch Sleep for last night
-    sleep_start = int((now - datetime.timedelta(days=1)).timestamp() * 1000)
     sleep_payload = {
         "aggregateBy": [{"dataTypeName": "com.google.sleep.segment"}],
-        "startTimeMillis": sleep_start,
+        "startTimeMillis": ts_24h,
         "endTimeMillis": ts_now
     }
     sleep_res = requests.post(FIT_API_URL, headers=headers, json=sleep_payload)
@@ -122,16 +128,16 @@ def fetch_data(access_token):
 
     return {
         "metrics": {
-            "system_recovery": latest_hrv or 62, # HRV
-            "neural_sync": round(total_sleep_minutes / 60, 1) or 7.2, # Sleep
-            "metabolic_output": latest_cal or 2100, # Calories
-            "current_heart_rate": current_hr
+            "system_recovery": latest_hrv or 62,
+            "neural_sync": round(total_sleep_minutes / 60, 1) or 7.2,
+            "metabolic_output": latest_cal or 2100,
+            "current_heart_rate": current_hr or 70
         },
         "trends": {
             "calories_7d": history_cal or [1800, 2200, 2100, 2400, 1900, 2300, 2100],
             "heart_rate_24h": hr_history or [70, 72, 68, 65, 62, 60, 64, 68, 75, 80, 85, 82, 78, 75, 72, 70, 74, 78, 82, 80, 76, 74, 72, 70]
         },
-        "last_updated": datetime.datetime.utcnow().isoformat() + "Z"
+        "last_updated": now.isoformat()
     }
 
 def main():
