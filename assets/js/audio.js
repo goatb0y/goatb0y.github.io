@@ -8,6 +8,7 @@ const DEFAULT_PLAYLIST_ID = 'PL5AFV1HsQbkyE2A6ALd614B80lvV-NclH'; // User's cust
 let player;
 let isMuted = true;
 let eqInterval;
+let floatingAudioWidget;
 
 // Initialize YouTube API
 window.onYouTubeIframeAPIReady = () => {
@@ -53,6 +54,7 @@ function onPlayerStateChange(event) {
     const statusLabel = document.querySelector('.audio-status');
     const playPauseBtn = document.getElementById('audio-play-pause');
     const miniPlayPauseBtn = document.getElementById('mini-audio-play-pause');
+    const peekPlayPause = document.getElementById('peek-play-pause');
 
     const playIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
     const pauseIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
@@ -63,13 +65,15 @@ function onPlayerStateChange(event) {
         updatePlayerInfo();
         if (playPauseBtn) playPauseBtn.innerHTML = pauseIcon;
         if (miniPlayPauseBtn) miniPlayPauseBtn.innerHTML = pauseIcon;
-    } else if (event.data === YT.PlayerState.PAUSED) {
-        if (statusLabel) statusLabel.innerText = 'PAUSED';
+        if (peekPlayPause) peekPlayPause.innerHTML = pauseIcon;
+        if (floatingAudioWidget) floatingAudioWidget.classList.add('is-playing');
+    } else {
+        if (statusLabel) statusLabel.innerText = 'PAUSED // SUBSPACE';
         stopEqualizer();
         if (playPauseBtn) playPauseBtn.innerHTML = playIcon;
         if (miniPlayPauseBtn) miniPlayPauseBtn.innerHTML = playIcon;
-    } else if (event.data === YT.PlayerState.BUFFERING) {
-        if (statusLabel) statusLabel.innerText = 'BUFFERING...';
+        if (peekPlayPause) peekPlayPause.innerHTML = playIcon;
+        if (floatingAudioWidget) floatingAudioWidget.classList.remove('is-playing');
     }
 }
 
@@ -81,17 +85,17 @@ function updatePlayerInfo() {
     const artistEl = document.getElementById('audio-artist');
     const miniTitleEl = document.getElementById('mini-audio-title');
     const miniArtistEl = document.getElementById('mini-audio-artist');
+    const collapsedInfo = document.getElementById('collapsed-track-info');
+    const peekTrackName = document.getElementById('peek-track-name');
 
     if (data) {
         const title = data.title || 'Unknown Signal';
         const artist = data.author || 'Deep Space';
 
-        // Update Title with Marquee Check
+        // Update Sidebar Title with Marquee Check
         if (titleEl) {
             titleEl.innerText = title;
             titleEl.classList.remove('audio-marquee');
-
-            // Check for overflow after a micro-task to allow layout
             setTimeout(() => {
                 if (titleEl.scrollWidth > titleEl.offsetWidth) {
                     titleEl.innerHTML = `<span>${title}</span><span style="padding-left: 40px;">${title}</span>`;
@@ -104,7 +108,6 @@ function updatePlayerInfo() {
         if (artistEl) {
             artistEl.innerText = artist;
             artistEl.classList.remove('audio-marquee');
-
             setTimeout(() => {
                 if (artistEl.scrollWidth > artistEl.offsetWidth) {
                     artistEl.innerHTML = `<span>${artist}</span><span style="padding-left: 40px;">${artist}</span>`;
@@ -113,27 +116,10 @@ function updatePlayerInfo() {
             }, 0);
         }
 
-        if (miniTitleEl) {
-            miniTitleEl.innerText = title;
-            miniTitleEl.classList.remove('audio-marquee');
-            setTimeout(() => {
-                if (miniTitleEl.scrollWidth > miniTitleEl.offsetWidth) {
-                    miniTitleEl.innerHTML = `<span>${title}</span><span style="padding-left: 40px;">${title}</span>`;
-                    miniTitleEl.classList.add('audio-marquee');
-                }
-            }, 0);
-        }
-
-        if (miniArtistEl) {
-            miniArtistEl.innerText = artist;
-            miniArtistEl.classList.remove('audio-marquee');
-            setTimeout(() => {
-                if (miniArtistEl.scrollWidth > miniArtistEl.offsetWidth) {
-                    miniArtistEl.innerHTML = `<span>${artist}</span><span style="padding-left: 40px;">${artist}</span>`;
-                    miniArtistEl.classList.add('audio-marquee');
-                }
-            }, 0);
-        }
+        if (miniTitleEl) miniTitleEl.innerText = title;
+        if (miniArtistEl) miniArtistEl.innerText = artist;
+        if (peekTrackName) peekTrackName.innerText = title;
+        if (collapsedInfo) collapsedInfo.innerText = `// ${title}`;
     }
 }
 
@@ -244,27 +230,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('audio-prev');
     const muteBtn = document.getElementById('audio-mute');
 
-    const miniPlayPauseBtn = document.getElementById('mini-audio-play-pause');
-    const miniNextBtn = document.getElementById('mini-audio-next');
     const miniPrevBtn = document.getElementById('mini-audio-prev');
+    const miniNextBtn = document.getElementById('mini-audio-next');
+    const miniPlayPauseBtn = document.getElementById('mini-audio-play-pause');
     const miniCloseBtn = document.getElementById('mini-player-close');
+    const peekPlayPause = document.getElementById('peek-play-pause');
+    floatingAudioWidget = document.getElementById('floating-audio-widget');
 
-    const togglePlay = () => {
+    const togglePlay = (e) => {
+        if (e) e.stopPropagation();
         const state = player.getPlayerState();
         if (state === YT.PlayerState.PLAYING) {
             player.pauseVideo();
         } else {
             player.playVideo();
-            if (isMuted) {
-                player.unMute();
-                isMuted = false;
-                if (muteBtn) muteBtn.classList.remove('is-muted');
-            }
+            // REMOVED auto-unmute logic here to respect user's mute state
         }
     };
 
+    // Toggle expansion for mobile/touch
+    if (floatingAudioWidget) {
+        floatingAudioWidget.addEventListener('click', (e) => {
+            if (window.innerWidth <= 600) {
+                // If clicking children buttons, don't toggle expansion
+                if (e.target.closest('.peek-controls')) return;
+
+                // Specifically toggle if clicking the peek area
+                if (e.target.closest('.floating-audio-peek')) {
+                    floatingAudioWidget.classList.toggle('is-expanded');
+                }
+            }
+        });
+    }
+
     if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlay);
     if (miniPlayPauseBtn) miniPlayPauseBtn.addEventListener('click', togglePlay);
+    if (peekPlayPause) peekPlayPause.addEventListener('click', togglePlay);
 
     if (nextBtn) nextBtn.addEventListener('click', () => player.nextVideo());
     if (miniNextBtn) miniNextBtn.addEventListener('click', () => player.nextVideo());
@@ -274,31 +275,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (miniCloseBtn) {
         miniCloseBtn.addEventListener('click', () => {
-            document.getElementById('mini-player').classList.remove('is-visible');
+            const miniPlayer = document.getElementById('mini-player');
+            if (miniPlayer) miniPlayer.classList.remove('is-visible');
         });
     }
 
     if (muteBtn) {
-        // Initial state
-        muteBtn.classList.add('is-muted');
-        muteBtn.classList.add('mute-pulse');
+        const unmuteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+        const muteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
 
-        // Remove pulse after 10 seconds (stops after a while)
-        setTimeout(() => {
-            muteBtn.classList.remove('mute-pulse');
-        }, 10000);
+        muteBtn.innerHTML = muteIcon;
+        muteBtn.classList.add('is-muted');
+
+        const musicToggle = document.getElementById('music-toggle');
+        if (musicToggle) {
+            musicToggle.classList.add('music-prompt');
+        }
 
         muteBtn.addEventListener('click', () => {
-            muteBtn.classList.remove('mute-pulse'); // Stop pulse on interaction
+            if (musicToggle) musicToggle.classList.remove('music-prompt');
             if (player.isMuted()) {
                 player.unMute();
                 isMuted = false;
                 muteBtn.classList.remove('is-muted');
+                muteBtn.innerHTML = unmuteIcon;
             } else {
                 player.mute();
                 isMuted = true;
                 muteBtn.classList.add('is-muted');
+                muteBtn.innerHTML = muteIcon;
             }
+        });
+    }
+
+    const musicToggle = document.getElementById('music-toggle');
+    const musicIndicator = document.getElementById('music-indicator');
+
+    if (musicToggle && floatingAudioWidget) {
+        musicToggle.addEventListener('click', () => {
+            const isCollapsed = floatingAudioWidget.classList.toggle('is-collapsed');
+            if (musicIndicator) {
+                musicIndicator.innerText = isCollapsed ? '+' : '−';
+            }
+            musicToggle.classList.remove('music-prompt');
         });
     }
 });

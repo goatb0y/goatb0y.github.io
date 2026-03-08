@@ -5,14 +5,11 @@ summary: "A holistic visualization of the systems surrounding death and mourning
 slug: sign/giga-map
 ---
 
-![GIGA Map Index](/assets/images/posts/giga-map/index.webp)
+![GIGA Map Index](/assets/images/posts/giga-map/index.webp){size=medium layout=right}
 
 For my master’s thesis, "Designing with and for ‘Meaning’," I decided to tackle a pretty heavy topic: how we design services around death and humanist funerals. Before I could jump into designing solutions, I needed to understand how the end-of-life ecosystem actually works. Enter the GIGA-map.
 
-<div class="zoom-image-container">
-    <img src="/assets/images/posts/giga-map/main-map.webp" alt="GIGA Map - Dying in Sweden" class="zoom-enabled">
-    <div class="zoom-hint">Click to expand / zoom</div>
-</div>
+![GIGA Map - Dying in Sweden](/assets/images/posts/giga-map/main-map.webp){zoomable size=full}
 
 I created a massive visual system map titled "Dying in Sweden" to break down all the complex moving parts. If you have never used GIGA-mapping before, it is essentially a zoomed-out blueprint used to make sense of messy, complex systems. For this project, I mapped out everything across two main timelines ("Life" and "Post-Death"), plotting out human actors, legal agencies, financial resources, and most importantly, the flow of information.
 

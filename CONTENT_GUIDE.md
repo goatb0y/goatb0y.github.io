@@ -42,6 +42,21 @@ graph LR;
 *   Use `### Header` for section titles within articles (matches the LCARS dashboard style).
 *   Use **bold** for emphasis on techno-optimist keywords.
 
+### 🖼️ Advanced Images
+You can now define parameters for images like size, layout, and zoomability directly in Markdown:
+
+```markdown
+![Alt Text](/path/to/image.jpg){size=medium layout=right zoomable}
+```
+
+*   **Parameters**:
+    *   `size`: `small`, `medium`, `large`, `full`
+    *   `layout`: `left`, `right`, `center`
+    *   `zoomable`: Include this to enable the click-to-zoom lightbox effect.
+*   **Examples**:
+    *   `{size=small layout=left}` - Small image floating on the left.
+    *   `{size=full zoomable}` - Full-width zoomable image.
+
 ## 🛠️ Deployment Logic
 *   **Locally**: Run `python build.py` to refresh the site immediately while you are editing.
 *   **Live**: Just `git push`. A GitHub Action will automatically run the build script and update your dashboard live on the web!

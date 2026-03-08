@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('post-search');
     const shareBtn = document.getElementById('share-btn');
 
+    const sidebarPostTab = document.getElementById('sidebar-post-tab');
+    const sidebarPostName = document.getElementById('sidebar-post-name');
+    const sidebarPostMeta = document.getElementById('sidebar-post-meta');
+    const closePostTab = document.getElementById('close-post-tab');
+
     const marqueeText = document.getElementById('marquee-text');
     const mobileMarquee = document.getElementById('mobile-marquee');
     let isScrolledDown = false;
@@ -89,6 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 aboutIndicator.style.transform = 'rotate(180deg)';
                 aboutToggle.style.color = 'var(--sys-text-bright)';
             }
+        });
+    }
+
+    if (closePostTab) {
+        closePostTab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navigateToPost('home');
         });
     }
 
@@ -385,7 +397,27 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 homeView.classList.remove('fade-out');
             }, 50);
+
+            // Reset tabs to default: Recent Logs active
+            const bentoTabs = homeView.querySelectorAll('.bento-tab');
+            const recentLogsTab = homeView.querySelector('[data-tab="recent-posts-list"]');
+            if (bentoTabs.length > 0 && recentLogsTab) {
+                bentoTabs.forEach(t => t.classList.remove('active'));
+                recentLogsTab.classList.add('active');
+
+                const containers = homeView.querySelectorAll('.posts-list, .timeline-container, .project-gallery-container');
+                containers.forEach(c => {
+                    if (c.id === 'recent-posts-list') {
+                        c.style.display = 'flex';
+                    } else {
+                        c.style.display = 'none';
+                    }
+                });
+            }
         }
+
+        // Hide sidebar post tab
+        if (sidebarPostTab) sidebarPostTab.style.display = 'none';
 
         // Hide mini player on home
         if (window.setMiniPlayerVisibility) {
@@ -449,6 +481,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show sidebar dossier on post pages
         if (sidebarBottom) sidebarBottom.style.display = 'block';
 
+        // Show and populate sidebar post tab
+        if (sidebarPostTab) {
+            sidebarPostTab.style.display = 'block';
+            if (sidebarPostName) sidebarPostName.innerText = post.title.toUpperCase();
+            if (sidebarPostMeta) sidebarPostMeta.innerText = `${post.date} // ${post.collection}`;
+        }
+
         // Close sidebar on mobile after selection
         if (window.innerWidth <= 900) {
             sidebarDrawer.classList.remove('active');
@@ -477,9 +516,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     contentHeader.style.opacity = '1';
                 }
 
+                // Helper to handle image attributes: ![alt](url){size=small layout=left zoomable}
+                const preprocessMarkdown = (text) => {
+                    const imageRegex = /!\[([^\]]*)\]\(([^)]*)\)\{([^}]*)\}/g;
+                    return text.replace(imageRegex, (match, alt, src, attrsStr) => {
+                        const attrs = {};
+                        attrsStr.trim().split(/\s+/).filter(Boolean).forEach(part => {
+                            const [key, value] = part.split('=');
+                            attrs[key.toLowerCase()] = value ? value.toLowerCase() : true;
+                        });
+
+                        let classes = [];
+                        if (attrs.size) classes.push(`img-size-${attrs.size}`);
+                        if (attrs.layout) classes.push(`img-layout-${attrs.layout}`);
+
+                        const isZoomable = attrs.zoomable === true || attrs.zoomable === 'true';
+
+                        if (isZoomable) {
+                            return `<div class="zoom-image-container ${classes.join(' ')}"><img src="${src}" alt="${alt}" class="zoom-enabled"><div class="zoom-hint">Click to expand / zoom</div></div>`;
+                        } else {
+                            return `<img src="${src}" alt="${alt}" class="${classes.join(' ')}">`;
+                        }
+                    });
+                };
+
                 // Populate Scrolling Article Content
                 if (typeof marked !== 'undefined') {
-                    articleContentContainer.innerHTML = marked.parse(post.content);
+                    const processedContent = preprocessMarkdown(post.content);
+                    articleContentContainer.innerHTML = marked.parse(processedContent);
                 } else {
                     articleContentContainer.innerText = post.content;
                     console.error("Marked library not found. Rendering raw text.");
@@ -687,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.classList.add('active');
 
             // Update content visibility
-            const contentContainers = widget.querySelectorAll('.posts-list, .timeline-container');
+            const contentContainers = widget.querySelectorAll('.posts-list, .timeline-container, .project-gallery-container');
             contentContainers.forEach(container => {
                 if (container.id === targetId) {
                     container.style.display = 'flex';

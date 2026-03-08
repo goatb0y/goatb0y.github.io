@@ -94,17 +94,6 @@
                 </div>
             </div>
 
-            <div id="sidebar-post-tab" class="sidebar-post-tab" style="display: none;">
-                <div class="post-tab-header">
-                    <span class="post-tab-title">ACTIVE LOG</span>
-                    <span class="post-tab-close" id="close-post-tab">×</span>
-                </div>
-                <div class="post-tab-info">
-                    <div class="post-tab-name" id="sidebar-post-name">---</div>
-                    <div class="post-tab-meta" id="sidebar-post-meta">---</div>
-                </div>
-            </div>
-
             <div class="sidebar-bottom">
                 <div class="about-expander" id="about-toggle">
                     <span class="about-title">PERSONNEL DOSSIER</span>
@@ -118,97 +107,6 @@
                     <p class="role">DESIGN RESEARCHER / MAKER</p>
                     <p class="bio">A techno-optimist design generalist focused on meaningful design, systems thinking,
                         and elegant integrations. </p>
-                </div>
-            </div>
-
-            <!-- RELOCATED AUDIO WIDGET -->
-            <div class="floating-music-panel sidebar-music-panel" id="floating-audio-widget">
-                <!-- Toggle Header (Sidebar Only) -->
-                <div class="music-expander" id="music-toggle">
-                    <div class="music-expander-left">
-                        <span class="music-title">SUBSPACE AUDIO</span>
-                        <span class="music-active-info" id="collapsed-track-info"></span>
-                    </div>
-                    <span class="indicator" id="music-indicator">−</span>
-                </div>
-
-                <!-- Peek Handle (Mobile Only Strip) -->
-                <div class="floating-audio-peek">
-                    <div class="peek-info">
-                        <span class="peek-status">LIVE</span>
-                        <span class="peek-track" id="peek-track-name">INITIALIZING...</span>
-                    </div>
-                    <div class="peek-controls">
-                        <button class="sys-action-btn" id="peek-play-pause">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Main Player Area (Permanent in Sidebar, Hidden/Peek on Mobile) -->
-                <div class="floating-audio-full">
-                    <div class="audio-main-layout">
-                        <!-- Art / Visualizer -->
-                        <div class="audio-visualizer-container">
-                            <div id="yt-player-container">
-                                <div id="yt-player"></div>
-                            </div>
-                            <!-- Equalizer Overlay -->
-                            <div class="equalizer" id="equalizer">
-                                <!-- Bars Injected by JS -->
-                            </div>
-                        </div>
-
-                        <!-- UI Controls & Info -->
-                        <div class="audio-ui-col">
-                            <div class="audio-info-row">
-                                <div class="audio-status">SUBSPACE AUDIO // v6.0</div>
-                                <div class="audio-title marquee-parent" id="audio-title">---</div>
-                                <div class="audio-artist marquee-parent" id="audio-artist">---</div>
-                            </div>
-
-                            <div class="audio-bottom-row">
-                                <div class="audio-controls">
-                                    <button class="sys-action-btn" id="audio-prev" title="PREVIOUS">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                                            <line x1="5" y1="19" x2="5" y2="5"></line>
-                                        </svg>
-                                    </button>
-                                    <button class="sys-action-btn play-btn" id="audio-play-pause" title="PLAY / PAUSE">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                        </svg>
-                                    </button>
-                                    <button class="sys-action-btn" id="audio-next" title="NEXT">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                                            <line x1="19" y1="5" x2="19" y2="19"></line>
-                                        </svg>
-                                    </button>
-                                    <button class="sys-action-btn" id="audio-mute" title="TOGGLE AUDIO">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div class="audio-progress-area">
-                                    <div class="progress-bar-bg" id="audio-progress-bar">
-                                        <div class="progress-bar-fill" id="audio-progress-fill"></div>
-                                    </div>
-                                    <div class="progress-time">
-                                        <span id="audio-current-time">00:00</span>
-                                        <span id="audio-duration">00:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -299,28 +197,19 @@
                                 <div class="bento-title-wrapper">
                                     <span class="bento-id">02-B</span>
                                     <div class="bento-tabs">
-                                        <button class="bento-tab" data-tab="project-gallery"
-                                            style="display: none;">PROJECT
-                                            GALLERY</button>
                                         <button class="bento-tab active" data-tab="recent-posts-list">RECENT
                                             LOGS</button>
                                         <button class="bento-tab" data-tab="career-journey">CAREER JOURNEY</button>
-                                        <button class="bento-tab" data-tab="quantified-self">QUANTIFIED SELF</button>
                                     </div>
                                 </div>
                                 <div class="bento-status-light"></div>
                             </div>
                             <div class="bento-content">
-                                <div id="project-gallery" class="project-gallery-container gallery-grid"
-                                    style="display: none;">
-                                    <!-- Populated by projects.js -->
-                                </div>
-
                                 <div id="recent-posts-list" class="posts-list">
                                     <!-- Populated by JS -->
                                 </div>
 
-                                <div id="career-journey" class="timeline-container" style="display: none;">
+                                <div id="career-journey" class="timeline-container">
                                     <div class="career-timeline">
                                         <div class="timeline-item current">
                                             <div class="timeline-point"></div>
@@ -431,43 +320,109 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div id="quantified-self" class="project-gallery-container biometrics-tab-content"
-                                    style="display: none;">
-                                    <div class="biometrics-widget">
-                                        <div class="bio-stats-col">
-                                            <div class="bio-stat">
-                                                <span class="bio-label">SYSTEM RECOVERY</span>
-                                                <span class="bio-value" id="bio-hrv">-- MS</span>
-                                            </div>
-                                            <div class="bio-stat">
-                                                <span class="bio-label">NEURAL SYNC</span>
-                                                <span class="bio-value" id="bio-sleep">-- HRS</span>
-                                            </div>
-                                            <div class="bio-stat">
-                                                <span class="bio-label">ENERGY OUTPUT</span>
-                                                <span class="bio-value" id="bio-energy">-- KCAL</span>
+                        <!-- 03 — Audio: right half top -->
+                        <div class="bento-widget bento-audio" style="--widget-color: var(--sys-accent-warn)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">03-C</span>
+                                    <span class="bento-title">SUBSPACE AUDIO</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content audio-widget-content">
+                                <div class="audio-main-layout">
+                                    <div class="audio-visualizer-container">
+                                        <div id="yt-player-container">
+                                            <div id="yt-player"></div>
+                                        </div>
+                                    </div>
+                                    <div class="audio-ui-col">
+                                        <div class="audio-info-row">
+                                            <div class="audio-details">
+                                                <div class="audio-status">INITIALIZING...</div>
+                                                <div class="audio-title" id="audio-title">---</div>
+                                                <div class="audio-artist" id="audio-artist">---</div>
                                             </div>
                                         </div>
-                                        <div class="bio-charts-container">
-                                            <div class="bio-chart-group">
-                                                <div class="chart-header">
-                                                    <span class="chart-title">LIVE HEART RATE TELEMETRY</span>
-                                                    <span class="chart-value" id="live-hr">-- BPM</span>
+                                        <div class="audio-bottom-row">
+                                            <div class="audio-progress-section">
+                                                <div id="equalizer" class="equalizer stretched-eq">
+                                                    <!-- Bars generated by JS -->
                                                 </div>
-                                                <div class="bio-chart-col live-chart">
-                                                    <svg id="chart-hr" class="telemetry-svg"></svg>
+                                                <div class="progress-bar-bg">
+                                                    <div class="progress-bar-fill" id="audio-progress-fill"
+                                                        style="width: 0%;"></div>
+                                                </div>
+                                                <div class="progress-time">
+                                                    <span id="audio-current-time">00:00</span>
+                                                    <span id="audio-duration">00:00</span>
                                                 </div>
                                             </div>
-                                            <div class="bio-chart-group">
-                                                <div class="chart-header">
-                                                    <span class="chart-title">7-DAY METABOLIC TREND</span>
-                                                </div>
-                                                <div class="bio-chart-col trend-chart">
-                                                    <svg id="chart-trend" class="telemetry-svg"></svg>
-                                                </div>
+                                            <div class="audio-controls">
+                                                <button class="sys-action-btn" id="audio-prev"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                                                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                                                    </svg></button>
+                                                <button class="sys-action-btn play-btn" id="audio-play-pause"><svg
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                                    </svg></button>
+                                                <button class="sys-action-btn" id="audio-next"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                                                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                                                    </svg></button>
+                                                <button class="sys-action-btn" id="audio-mute"><svg viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="volume-up">
+                                                        </path>
+                                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="volume-down">
+                                                        </path>
+                                                        <line x1="23" y1="9" x2="17" y2="15" class="mute-x"></line>
+                                                        <line x1="17" y1="9" x2="23" y2="15" class="mute-x"></line>
+                                                    </svg></button>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 04 — Biometrics: right half bottom -->
+                        <div class="bento-widget bento-biometrics" style="--widget-color: var(--sys-accent-crit)">
+                            <div class="bento-texture"></div>
+                            <div class="bento-header">
+                                <div class="bento-title-wrapper">
+                                    <span class="bento-id">04-D</span>
+                                    <span class="bento-title">QUANTIFIED SELF</span>
+                                </div>
+                                <div class="bento-status-light"></div>
+                            </div>
+                            <div class="bento-content biometrics-widget">
+                                <div class="bio-stats-col">
+                                    <div class="bio-stat">
+                                        <span class="bio-label">SLEEP</span>
+                                        <span class="bio-value" id="bio-sleep">-- HRS</span>
+                                    </div>
+                                    <div class="bio-stat">
+                                        <span class="bio-label">HRV</span>
+                                        <span class="bio-value" id="bio-hrv">-- MS</span>
+                                    </div>
+                                    <div class="bio-stat">
+                                        <span class="bio-label">FOCUS</span>
+                                        <span class="bio-value" id="bio-focus">-- %</span>
+                                    </div>
+                                </div>
+                                <div class="bio-chart-col">
+                                    <div class="bio-chart" id="bio-chart">
+                                        <!-- Populated by biometrics.js -->
                                     </div>
                                 </div>
                             </div>
@@ -492,6 +447,45 @@
         </main>
     </div>
 
+    <!-- MINI PLAYER (Shows on Post Views) -->
+    <div class="mini-player" id="mini-player">
+        <div class="mini-player-inner">
+            <div class="mini-info">
+                <div class="mini-title" id="mini-audio-title">---</div>
+                <div class="mini-artist" id="mini-audio-artist">---</div>
+            </div>
+            <div class="mini-controls">
+                <button class="sys-action-btn" id="mini-audio-prev">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                    </svg>
+                </button>
+                <button class="sys-action-btn play-btn" id="mini-audio-play-pause">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+                <button class="sys-action-btn" id="mini-audio-next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="mini-progress-section">
+                <div class="progress-bar-bg" id="mini-progress-bar">
+                    <div class="progress-bar-fill" id="mini-audio-progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+            <button class="sys-action-btn mini-close" id="mini-player-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
 
     <!-- BOTTOM BAR (Static) -->
     <footer class="sys-bar bottom">
@@ -516,7 +510,6 @@
     <script src="/assets/js/audio.js"></script>
     <script src="/assets/js/biometrics.js"></script>
     <script src="/assets/js/face-effect.js"></script>
-    <script src="/assets/js/projects.js"></script>
     <script src="/assets/js/app.js"></script>
 </body>
 

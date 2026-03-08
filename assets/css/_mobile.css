@@ -131,18 +131,10 @@
         line-height: 1.2;
     }
 
-    /* --- Bento Grid Fixes --- */
+    /* --- Homepage Layout --- */
     .home-grid {
-        grid-template-columns: 100%;
-        /* Force single column to avoid overflow */
-        grid-template-areas:
-            "dossier"
-            "logs"
-            "audio"
-            "biometrics";
         gap: 16px;
         padding: 0;
-        /* Let scroller handle padding */
         height: auto;
         overflow: visible;
         width: 100%;
@@ -200,45 +192,24 @@
         margin-top: 8px;
     }
 
-    /* Mini Player Adjustment */
-    .mini-player {
-        bottom: 10px;
-        min-width: calc(100% - 32px);
-        left: 16px;
-        transform: translateY(150%);
-        margin: 0;
+    /* Floating Player Adjustment */
+    .floating-music-panel {
+        bottom: 0;
+        min-width: 100%;
+        left: 0;
+        transform: translateY(calc(100% - 50px));
+        border-radius: 0;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .mini-player.is-visible {
+    .floating-music-panel.is-expanded {
         transform: translateY(0);
-    }
-
-    .mini-player-inner {
-        padding: 10px 12px;
     }
 
     .home-profile-pic {
         width: 120px;
         /* Slightly smaller for mobile */
         height: 120px;
-    }
-
-    /* Audio Widget Overhaul */
-    .audio-main-layout {
-        flex-direction: column;
-        gap: 24px;
-        align-items: stretch;
-    }
-
-    .audio-visualizer-container {
-        width: 100%;
-        height: 160px;
-        /* Larger visualizer on mobile stack */
-    }
-
-    .audio-controls {
-        justify-content: center;
-        gap: 24px;
     }
 
     /* Logs Widget Overhaul */

@@ -5,7 +5,7 @@ summary: "Exploring the boundaries of life and death through design intervention
 slug: sign/mortality-probe
 ---
 
-![Design Probe](/assets/images/posts/mortality-probe/mortality-design-probe.webp)
+![Design Probe](/assets/images/posts/mortality-probe/mortality-design-probe.webp){size=large zoomable}
 
 
 We talk a lot about "designing for well-being," but those conversations usually revolve around physical health or managing stress. The deeper, more elusive stuff—like purpose, meaning, and our inevitable expiration date, rarely gets designed for. I've been thinking a lot about these existential questions. We might not have the ultimate answers, but shying away from them doesn't do us any favors. In fact, taking the time to confront our own mortality can play a huge role in our psychological well-being.
@@ -13,7 +13,7 @@ To explore this space, I built what I'm calling the **Mortality Probe**. It’s 
 
 ### Building the Probe
 
-![Design Form](/assets/images/posts/mortality-probe/mortality-probe-design-form.webp)
+![Design Form](/assets/images/posts/mortality-probe/mortality-probe-design-form.webp){size=medium layout=right zoomable}
 
 Physically, the probe is a small, unobtrusive device. I housed a 7.5-inch e-paper display and a Raspberry Pi Pico 2W inside a custom 3D-printed frame. I specifically chose an e-paper screen because it feels less like a glowing gadget and more like a physical object—much like a poster or a small photo frame you’d keep on your desk or nightstand.
 

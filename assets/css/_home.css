@@ -30,12 +30,11 @@
    ========================================================================= */
 .home-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
-        "dossier    dossier"
-        "logs       audio"
-        "logs       biometrics";
+        "dossier"
+        "logs";
     gap: 20px;
     padding: 20px;
     background-color: var(--sys-bg);
@@ -57,14 +56,6 @@
 .bento-logs {
     grid-area: logs;
     min-height: 500px;
-}
-
-.bento-audio {
-    grid-area: audio;
-}
-
-.bento-biometrics {
-    grid-area: biometrics;
 }
 
 /* =========================================================================
@@ -541,12 +532,12 @@
 }
 
 /* =========================================================================
-   Biometrics widget
+   Biometrics widget (Quantified Self)
    ========================================================================= */
 .biometrics-widget {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     align-items: stretch;
 }
 
@@ -562,89 +553,94 @@
     display: flex;
     flex-direction: column;
     background: rgba(148, 163, 184, 0.03);
-    padding: 10px 12px;
+    padding: 12px 14px;
     border-radius: 2px;
     border-left: 2px solid var(--widget-color);
     position: relative;
-    overflow: hidden;
-}
-
-.bio-stat::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(to right, transparent, var(--widget-color));
-    opacity: 0.03;
-    pointer-events: none;
+    border: 1px solid var(--sys-border);
+    border-left-width: 3px;
+    border-left-color: var(--widget-color);
 }
 
 .bio-label {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     font-weight: 600;
     color: var(--sys-text-muted);
     letter-spacing: 0.15em;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     text-transform: uppercase;
+    opacity: 0.7;
 }
 
 .bio-value {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--sys-text-bright);
     font-weight: 700;
     letter-spacing: -0.01em;
+    font-family: var(--font-display);
+}
+
+.bio-charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bio-chart-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 4px;
+}
+
+.chart-title {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: var(--widget-color);
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+}
+
+.chart-value {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--sys-text-bright);
 }
 
 .bio-chart-col {
-    flex-grow: 1;
-    height: 100px;
-    display: flex;
-    align-items: flex-end;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
     border: 1px solid var(--sys-border);
     position: relative;
+    overflow: hidden;
+    border-radius: 2px;
 }
 
-.bio-chart-col::before {
-    content: 'REAL-TIME TELEMETRY';
-    position: absolute;
-    top: 6px;
-    left: 8px;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    color: var(--widget-color);
-    opacity: 0.4;
-    letter-spacing: 0.1em;
-}
-
-.bio-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
+.telemetry-svg {
     width: 100%;
     height: 100%;
-    padding-top: 10px;
+    display: block;
 }
 
-.bio-chart .bar {
-    flex: 1;
-    background: linear-gradient(to top, var(--widget-color), transparent);
-    background-color: var(--widget-color);
-    border-radius: 1px 1px 0 0;
-    opacity: 0.4;
-    transition: all 0.2s ease;
-    min-height: 2px;
+/* Glow effect for telemetry lines */
+.telemetry-path {
+    filter: drop-shadow(0 0 4px currentColor);
 }
 
-.bio-chart .bar:hover {
-    opacity: 1;
-    box-shadow: 0 0 10px var(--widget-color);
-    transform: scaleX(1.1);
+.live-chart {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
 /* =========================================================================

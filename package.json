@@ -1,0 +1,16 @@
+{
+    "name": "personal-website",
+    "version": "1.0.0",
+    "description": "Personal website with automatic build and preview refresh",
+    "scripts": {
+        "build": "python build.py",
+        "serve": "browser-sync start --server --files \"**/*.{html,css,js}\" --no-notify",
+        "watch": "nodemon --watch content -e md --exec \"python build.py\"",
+        "dev": "python dev-server.py"
+    },
+    "devDependencies": {
+        "browser-sync": "^3.0.0",
+        "concurrently": "^8.2.0",
+        "nodemon": "^3.0.0"
+    }
+}
