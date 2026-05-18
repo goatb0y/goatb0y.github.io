@@ -2,7 +2,7 @@
   "metrics": {
     "system_recovery": 62,
     "neural_sync": 7.2,
-    "metabolic_output": 723,
+    "metabolic_output": 954,
     "current_heart_rate": 70
   },
   "trends": {
@@ -14,7 +14,7 @@
       1790,
       1802,
       1995,
-      723
+      954
     ],
     "heart_rate_24h": [
       70,
@@ -43,5 +43,5 @@
       70
     ]
   },
-  "last_updated": "2026-05-18T11:03:14.068198+00:00"
+  "last_updated": "2026-05-18T15:18:47.264006+00:00"
 }
